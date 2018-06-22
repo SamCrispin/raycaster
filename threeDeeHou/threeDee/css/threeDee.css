@@ -1,0 +1,128 @@
+BODY {
+  background-color: #202020;
+}
+#fps {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  background-color: white;
+  border: 1px inset;
+  width: 50px;
+  height: 24px;
+  font-size: 20px;
+}
+#view {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  margin-left: -700px;
+  width: 1400px;
+  height: 650px;
+  overflow: hidden;
+  border:2px inset;
+  perspective: 768px;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+#map{
+	position: absolute;
+	top: 2%;
+	left: 70%;
+	height: 10%;
+	width: 10%;
+	background: white;
+}
+.mapcell{
+	position: absolute;
+	height: 5px;
+	width: 5px;
+}
+
+.backgroundView {
+  position: absolute;
+  height: 696px;
+  top: 0px;
+}
+
+.floor {
+  position: absolute;
+  top: 0px;
+  background-image: url("../img/floor1 2.jpg");
+  background-repeat: repeat;
+  width: 6144px;
+  height: 6144px;
+  left: -2350px;
+}
+
+.walls {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  border:1px solid blue;
+}
+.wallTile {
+  position:absolute;
+  width: 258px;
+}
+.clipImg {
+  position:absolute;
+  overflow: hidden;
+  width: 256px;
+  height: 512px;
+  top: 0px;
+}
+.clipImg IMG {
+  position: absolute;
+  top: 275px;
+}
+.rot1 {
+  left: 0px;
+}
+.rot2 {
+  left: -256px;
+}
+.rot3 {
+  left: -512px;
+}
+.rot4 {
+  left: -768px;
+}
+.rot5 {
+  left: -1024px;
+}
+.rot6 {
+  left: -1280px;
+}
+.rot7 {
+  left: -1536px;
+}
+.rot8 {
+  left: -1792px;
+}
+.rot9 {
+  left: -2048px;
+}
+.rot10 {
+  left: -2304px;
+}
+.rot11 {
+  left: -2560px;
+}
+.rot12 {
+  left: -2816px;
+}
+.rot13 {
+  left: -3072px;
+}
+.rot14 {
+  left: -3328px;
+}
+.rot15 {
+  left: -3584px;
+}
+.rot16 {
+  left: -3840px;
+}

@@ -1,0 +1,785 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="8928a909-8435-4a6b-b6b7-aae6f624e3f3" name="Default" comment="" />
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="threeDee.htm" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/threeDee.htm">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="threeDee.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/css/threeDee.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1377">
+              <caret line="81" column="10" selection-start-line="81" selection-start-column="10" selection-end-line="81" selection-end-column="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="threeDee.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/script/threeDee.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="460">
+              <caret line="170" column="5" lean-forward="true" selection-start-line="170" selection-start-column="5" selection-end-line="170" selection-end-column="5" />
+              <folding>
+                <element signature="n#!!block;n#setup#0" />
+                <element signature="n#!!block;n#setUpKeys#0" />
+                <element signature="n#!!block;n#keyClear#0" />
+                <element signature="n#!!block;n#keyDownHandler#0" />
+                <element signature="n#!!block;n#keyUpHandler#0" />
+                <element signature="n#!!block;n#updateView#0" />
+                <element signature="n#!!block;n#equip#0" />
+                <element signature="n#!!block;n#reload#0" />
+                <element signature="n#!!block;n#respawnTimer#0" />
+                <element signature="n#!!block;n#doMove#0" />
+                <element signature="n#!!block;n#gameLoop#0" />
+                <element signature="n#!!block;n#genMap#0" />
+                <element signature="n#!!block;n#updateMap#0" />
+                <element signature="n#!!block;n#unravelEnemyPath#0" />
+                <element signature="n#!!block;n#moveEnemies#0" />
+                <element signature="n#!!block;n#eRotate#0" />
+                <element signature="n#!!block;n#eForwards#0" />
+                <element signature="n#!!block;n#render#0" />
+                <element signature="n#!!block;n#InvTan#0" />
+                <element signature="n#!!block;n#rayCast#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>respawn</find>
+      <find>wallList</find>
+      <find>cells.length</find>
+      <find>render</find>
+      <find>equip</find>
+      <find>oldCy</find>
+      <find>NAND</find>
+      <find>gameLoop</find>
+      <find>moveEnem</find>
+      <find>!</find>
+      <find>SLX</find>
+      <find>mapId</find>
+      <find>eFor</find>
+      <find>splice</find>
+      <find>eFore</find>
+      <find>cellSize</find>
+      <find>setup</find>
+      <find>earth360f</find>
+      <find>floor4</find>
+      <find>moveE</find>
+      <find>ke</find>
+      <find>//</find>
+      <find>map</find>
+      <find>maps[1]</find>
+      <find>floorLeft</find>
+      <find>playerShoot</find>
+      <find>player</find>
+      <find>cx</find>
+      <find>mcx</find>
+      <find>doMove</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>Math.floor</replace>
+      <replace>x</replace>
+      <replace>e</replace>
+      <replace>typs[e]</replace>
+      <replace>\t</replace>
+      <replace>maps[0]</replace>
+    </replaceStrings>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/threeDee.htm" />
+        <option value="$PROJECT_DIR$/css/threeDee.css" />
+        <option value="$PROJECT_DIR$/script/threeDee.js" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths />
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1912" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <expand>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="threeDeeVolume" type="cbb8eebc:String" user="threeDeeVolume" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="threeDeeFinal" type="b2602c69:ProjectViewProjectNode" />
+              <item name="threeDeeFinal" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="threeDeeFinal" type="b2602c69:ProjectViewProjectNode" />
+              <item name="threeDeeFinal" type="462c0819:PsiDirectoryNode" />
+              <item name="img" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../threeDeeHou" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8928a909-8435-4a6b-b6b7-aae6f624e3f3" name="Default" comment="" />
+      <created>1527249826555</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1527249826555</updated>
+      <workItem from="1527249827856" duration="2298000" />
+      <workItem from="1527252146912" duration="3042000" />
+      <workItem from="1527580623474" duration="6311000" />
+      <workItem from="1527599162235" duration="8661000" />
+      <workItem from="1527668576019" duration="11909000" />
+      <workItem from="1527688051532" duration="17000" />
+      <workItem from="1527692045058" duration="43887000" />
+      <workItem from="1528364256096" duration="289000" />
+      <workItem from="1528373752404" duration="2490000" />
+      <workItem from="1528801077774" duration="27391000" />
+      <workItem from="1529051023537" duration="42326000" />
+      <workItem from="1529573813261" duration="1063000" />
+      <workItem from="1529584380564" duration="148000" />
+      <workItem from="1529584547782" duration="3419000" />
+      <workItem from="1529654804545" duration="1923000" />
+      <workItem from="1529680782198" duration="30000" />
+      <workItem from="1529681133190" duration="1838000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="157042000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18020834" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.32943678" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32943678" />
+      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="14" />
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/threeDee.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/threeDee.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1377">
+          <caret line="81" column="10" selection-start-line="81" selection-start-column="10" selection-end-line="81" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/threeDee.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7837">
+          <caret line="815" selection-start-line="815" selection-end-line="815" />
+          <folding>
+            <element signature="n#!!block;n#setup#0" />
+            <element signature="n#!!block;n#setUpKeys#0" />
+            <element signature="n#!!block;n#keyClear#0" />
+            <element signature="n#!!block;n#keyDownHandler#0" />
+            <element signature="n#!!block;n#keyUpHandler#0" />
+            <element signature="n#!!block;n#updateView#0" />
+            <element signature="n#!!block;n#equip#0" />
+            <element signature="n#!!block;n#reload#0" />
+            <element signature="n#!!block;n#respawnTimer#0" />
+            <element signature="n#!!block;n#doMove#0" />
+            <element signature="n#!!block;n#gameLoop#0" />
+            <element signature="n#!!block;n#genMap#0" />
+            <element signature="n#!!block;n#updateMap#0" />
+            <element signature="n#!!block;n#unravelEnemyPath#0" />
+            <element signature="n#!!block;n#moveEnemies#0" />
+            <element signature="n#!!block;n#eRotate#0" />
+            <element signature="n#!!block;n#eForwards#0" />
+            <element signature="n#!!block;n#render#0" />
+            <element signature="n#!!block;n#InvTan#0" />
+            <element signature="n#!!block;n#rayCast#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/threeDee.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/threeDee.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1377">
+          <caret line="81" column="10" selection-start-line="81" selection-start-column="10" selection-end-line="81" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/threeDee.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7837">
+          <caret line="815" lean-forward="true" selection-start-line="815" selection-end-line="815" />
+          <folding>
+            <element signature="n#!!block;n#setup#0" />
+            <element signature="n#!!block;n#setUpKeys#0" />
+            <element signature="n#!!block;n#keyClear#0" />
+            <element signature="n#!!block;n#keyDownHandler#0" />
+            <element signature="n#!!block;n#keyUpHandler#0" />
+            <element signature="n#!!block;n#updateView#0" />
+            <element signature="n#!!block;n#equip#0" />
+            <element signature="n#!!block;n#reload#0" />
+            <element signature="n#!!block;n#respawnTimer#0" />
+            <element signature="n#!!block;n#doMove#0" />
+            <element signature="n#!!block;n#gameLoop#0" />
+            <element signature="n#!!block;n#genMap#0" />
+            <element signature="n#!!block;n#updateMap#0" />
+            <element signature="n#!!block;n#unravelEnemyPath#0" />
+            <element signature="n#!!block;n#moveEnemies#0" />
+            <element signature="n#!!block;n#eRotate#0" />
+            <element signature="n#!!block;n#eForwards#0" />
+            <element signature="n#!!block;n#render#0" />
+            <element signature="n#!!block;n#InvTan#0" />
+            <element signature="n#!!block;n#rayCast#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/threeDee.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/threeDee.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1377">
+          <caret line="81" column="10" selection-start-line="81" selection-start-column="10" selection-end-line="81" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/threeDee.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4590">
+          <caret line="356" column="15" selection-start-line="356" selection-start-column="9" selection-end-line="356" selection-end-column="15" />
+          <folding>
+            <element signature="n#!!block;n#setup#0" />
+            <element signature="n#!!block;n#setUpKeys#0" />
+            <element signature="n#!!block;n#keyClear#0" />
+            <element signature="n#!!block;n#keyDownHandler#0" />
+            <element signature="n#!!block;n#keyUpHandler#0" />
+            <element signature="n#!!block;n#updateView#0" />
+            <element signature="n#!!block;n#equip#0" />
+            <element signature="n#!!block;n#reload#0" />
+            <element signature="n#!!block;n#respawnTimer#0" />
+            <element signature="n#!!block;n#doMove#0" />
+            <element signature="n#!!block;n#gameLoop#0" />
+            <element signature="n#!!block;n#genMap#0" />
+            <element signature="n#!!block;n#updateMap#0" />
+            <element signature="n#!!block;n#unravelEnemyPath#0" />
+            <element signature="n#!!block;n#moveEnemies#0" />
+            <element signature="n#!!block;n#eRotate#0" />
+            <element signature="n#!!block;n#eForwards#0" />
+            <element signature="n#!!block;n#render#0" />
+            <element signature="n#!!block;n#InvTan#0" />
+            <element signature="n#!!block;n#rayCast#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/threeDee.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/threeDee.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="969">
+          <caret line="57" column="15" selection-start-line="57" selection-start-column="15" selection-end-line="57" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/threeDee.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="38" column="16" selection-start-line="38" selection-start-column="16" selection-end-line="38" selection-end-column="16" />
+          <folding>
+            <element signature="n#!!block;n#setup#0" />
+            <element signature="n#!!block;n#setUpKeys#0" />
+            <element signature="n#!!block;n#keyClear#0" />
+            <element signature="n#!!block;n#keyDownHandler#0" />
+            <element signature="n#!!block;n#keyUpHandler#0" />
+            <element signature="n#!!block;n#updateView#0" />
+            <element signature="n#!!block;n#equip#0" />
+            <element signature="n#!!block;n#reload#0" />
+            <element signature="n#!!block;n#respawnTimer#0" />
+            <element signature="n#!!block;n#doMove#0" />
+            <element signature="n#!!block;n#gameLoop#0" />
+            <element signature="n#!!block;n#genMap#0" />
+            <element signature="n#!!block;n#updateMap#0" />
+            <element signature="n#!!block;n#unravelEnemyPath#0" />
+            <element signature="n#!!block;n#moveEnemies#0" />
+            <element signature="n#!!block;n#eRotate#0" />
+            <element signature="n#!!block;n#eForwards#0" />
+            <element signature="n#!!block;n#render#0" />
+            <element signature="n#!!block;n#InvTan#0" />
+            <element signature="n#!!block;n#rayCast#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/threeDee.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/threeDee.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="969">
+          <caret line="57" column="15" selection-start-line="57" selection-start-column="15" selection-end-line="57" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/threeDee.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4879">
+          <caret line="724" column="1" lean-forward="true" selection-start-line="724" selection-start-column="1" selection-end-line="724" selection-end-column="1" />
+          <folding>
+            <element signature="n#!!block;n#setup#0" />
+            <element signature="n#!!block;n#setUpKeys#0" />
+            <element signature="n#!!block;n#keyClear#0" />
+            <element signature="n#!!block;n#keyDownHandler#0" />
+            <element signature="n#!!block;n#keyUpHandler#0" />
+            <element signature="n#!!block;n#updateView#0" />
+            <element signature="n#!!block;n#equip#0" />
+            <element signature="n#!!block;n#reload#0" />
+            <element signature="n#!!block;n#respawnTimer#0" />
+            <element signature="n#!!block;n#doMove#0" />
+            <element signature="n#!!block;n#gameLoop#0" />
+            <element signature="n#!!block;n#genMap#0" />
+            <element signature="n#!!block;n#updateMap#0" />
+            <element signature="n#!!block;n#unravelEnemyPath#0" />
+            <element signature="n#!!block;n#moveEnemies#0" />
+            <element signature="n#!!block;n#eRotate#0" />
+            <element signature="n#!!block;n#eForwards#0" />
+            <element signature="n#!!block;n#render#0" />
+            <element signature="n#!!block;n#InvTan#0" />
+            <element signature="n#!!block;n#rayCast#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/threeDee.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/threeDee.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="969">
+          <caret line="57" column="15" selection-start-line="57" selection-start-column="15" selection-end-line="57" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/threeDee.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2057">
+          <caret line="121" column="9" selection-start-line="121" selection-start-column="9" selection-end-line="121" selection-end-column="9" />
+          <folding>
+            <element signature="n#!!block;n#setup#0" />
+            <element signature="n#!!block;n#setUpKeys#0" />
+            <element signature="n#!!block;n#keyClear#0" />
+            <element signature="n#!!block;n#keyDownHandler#0" />
+            <element signature="n#!!block;n#keyUpHandler#0" />
+            <element signature="n#!!block;n#updateView#0" />
+            <element signature="n#!!block;n#equip#0" />
+            <element signature="n#!!block;n#reload#0" />
+            <element signature="n#!!block;n#respawnTimer#0" />
+            <element signature="n#!!block;n#doMove#0" />
+            <element signature="n#!!block;n#gameLoop#0" />
+            <element signature="n#!!block;n#genMap#0" />
+            <element signature="n#!!block;n#updateMap#0" />
+            <element signature="n#!!block;n#unravelEnemyPath#0" />
+            <element signature="n#!!block;n#moveEnemies#0" />
+            <element signature="n#!!block;n#eRotate#0" />
+            <element signature="n#!!block;n#eForwards#0" />
+            <element signature="n#!!block;n#render#0" />
+            <element signature="n#!!block;n#InvTan#0" />
+            <element signature="n#!!block;n#rayCast#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/threeDee.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/threeDee.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="30" column="12" selection-start-line="30" selection-start-column="12" selection-end-line="30" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/threeDee.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="799">
+          <caret line="47" column="9" lean-forward="true" selection-start-line="47" selection-start-column="9" selection-end-line="47" selection-end-column="9" />
+          <folding>
+            <element signature="n#!!block;n#setup#0" />
+            <element signature="n#!!block;n#setUpKeys#0" />
+            <element signature="n#!!block;n#keyClear#0" />
+            <element signature="n#!!block;n#keyDownHandler#0" />
+            <element signature="n#!!block;n#keyUpHandler#0" />
+            <element signature="n#!!block;n#updateView#0" />
+            <element signature="n#!!block;n#equip#0" />
+            <element signature="n#!!block;n#reload#0" />
+            <element signature="n#!!block;n#respawnTimer#0" />
+            <element signature="n#!!block;n#doMove#0" />
+            <element signature="n#!!block;n#gameLoop#0" />
+            <element signature="n#!!block;n#genMap#0" />
+            <element signature="n#!!block;n#updateMap#0" />
+            <element signature="n#!!block;n#unravelEnemyPath#0" />
+            <element signature="n#!!block;n#moveEnemies#0" />
+            <element signature="n#!!block;n#eRotate#0" />
+            <element signature="n#!!block;n#eForwards#0" />
+            <element signature="n#!!block;n#render#0" />
+            <element signature="n#!!block;n#InvTan#0" />
+            <element signature="n#!!block;n#rayCast#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/threeDee.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/threeDee.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="33" column="22" selection-start-line="33" selection-start-column="22" selection-end-line="33" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/threeDee.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8347">
+          <caret line="491" column="1" lean-forward="true" selection-start-line="491" selection-start-column="1" selection-end-line="491" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/threeDee.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/threeDee.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="33" column="22" selection-start-line="33" selection-start-column="22" selection-end-line="33" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/threeDee.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20196">
+          <caret line="1188" column="22" lean-forward="true" selection-start-line="1188" selection-start-column="22" selection-end-line="1188" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/threeDee.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/threeDee.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="33" column="22" selection-start-line="33" selection-start-column="22" selection-end-line="33" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/threeDee.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8755">
+          <caret line="515" column="62" lean-forward="true" selection-start-line="515" selection-start-column="62" selection-end-line="515" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/threeDee.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="6" selection-start-column="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.es5.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10166">
+          <caret line="611" column="4" selection-start-line="611" selection-start-column="4" selection-end-line="611" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/threeDee.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9928">
+          <caret line="584" column="12" selection-start-line="584" selection-start-column="12" selection-end-line="584" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/threeDee.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="6" selection-start-column="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.es5.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10387">
+          <caret line="611" column="4" selection-start-line="611" selection-start-column="4" selection-end-line="611" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/threeDee.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9928">
+          <caret line="584" column="12" lean-forward="true" selection-start-line="584" selection-start-column="12" selection-end-line="584" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/threeDee.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="6" selection-start-column="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/threeDee.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7939">
+          <caret line="467" column="34" selection-start-line="467" selection-start-column="34" selection-end-line="467" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/threeDee.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="6" selection-start-column="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/threeDee.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8619">
+          <caret line="507" column="26" lean-forward="true" selection-start-line="507" selection-start-column="26" selection-end-line="507" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/threeDee.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="6" lean-forward="true" selection-start-column="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/threeDee.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8432">
+          <caret line="496" lean-forward="true" selection-start-line="496" selection-end-line="496" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/threeDee.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17102">
+          <caret line="1006" column="5" lean-forward="true" selection-start-line="1006" selection-start-column="5" selection-end-line="1006" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.es6.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-120127">
+          <caret line="15232" column="4" selection-start-line="15232" selection-start-column="4" selection-end-line="15232" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-409">
+          <caret line="4058" column="4" selection-start-line="4058" selection-start-column="4" selection-end-line="4058" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.es5.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="628" column="6" lean-forward="true" selection-start-line="628" selection-start-column="6" selection-end-line="628" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/threeDee.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../picoAsm/picoAsm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="311">
+          <caret line="73" column="19" lean-forward="true" selection-start-line="73" selection-start-column="19" selection-end-line="73" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/threeDee.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1377">
+          <caret line="81" column="10" selection-start-line="81" selection-start-column="10" selection-end-line="81" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../threeDeeHou/threeDee/script/threeDee.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/threeDee.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="170" column="5" lean-forward="true" selection-start-line="170" selection-start-column="5" selection-end-line="170" selection-end-column="5" />
+          <folding>
+            <element signature="n#!!block;n#setup#0" />
+            <element signature="n#!!block;n#setUpKeys#0" />
+            <element signature="n#!!block;n#keyClear#0" />
+            <element signature="n#!!block;n#keyDownHandler#0" />
+            <element signature="n#!!block;n#keyUpHandler#0" />
+            <element signature="n#!!block;n#updateView#0" />
+            <element signature="n#!!block;n#equip#0" />
+            <element signature="n#!!block;n#reload#0" />
+            <element signature="n#!!block;n#respawnTimer#0" />
+            <element signature="n#!!block;n#doMove#0" />
+            <element signature="n#!!block;n#gameLoop#0" />
+            <element signature="n#!!block;n#genMap#0" />
+            <element signature="n#!!block;n#updateMap#0" />
+            <element signature="n#!!block;n#unravelEnemyPath#0" />
+            <element signature="n#!!block;n#moveEnemies#0" />
+            <element signature="n#!!block;n#eRotate#0" />
+            <element signature="n#!!block;n#eForwards#0" />
+            <element signature="n#!!block;n#render#0" />
+            <element signature="n#!!block;n#InvTan#0" />
+            <element signature="n#!!block;n#rayCast#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
