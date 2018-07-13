@@ -24,7 +24,6 @@ var fps, background, floor, wallDiv, viewPort, map,
         startEnemyId = 100, startPickupId = 50,
         enemyList = [], spriteList = [], respawnList = [],
         fpsCount = 0, ts = 0;
-        //walkCount = 5, walkCountI = 0, walkCN = 0;
 
 var player = {
     health: 100,
@@ -521,17 +520,14 @@ function gameLoop() {
     }
     ts = tNow;
     doMove();
-    //check for respawn
     //update any player bullets
     //check for enemy death
-    //update position, rotation and attack of enemies
     if (spriteLoopCount == spriteLoop) {
         moveEnemies();
         spriteLoopCount = 0;
     }
     spriteLoopCount++;
     //check for game end (end of level / player death)
-    //check for power ups / weapons / ammo
     updateView();
     //update status bar
 }
@@ -662,14 +658,6 @@ function eRotate(e, id, dir) {
 
 function eForwards(e, id) {
     var dx, dy;
-    /*if (walkCountI == walkCount) {
-        walkCountI = 0;
-        walkCN++;
-        if (walkCN == 6) walkCN = 0;
-    } else {
-        walkCountI++
-    }
-    e.CN = "walk" + walkCN;*/
     map.mapData[e.cx][e.cy].enemy = 0;
     dy = Math.cos((e.rot - 1) * pi8) * e.spd;
     dx = -Math.sin((e.rot - 1) * pi8) * e.spd;
