@@ -15,21 +15,19 @@ var fps, background, floor, wallDiv, viewPort, map,
         dx, dz,
         perspectiveDepth = 768,
         minimumDistanceFromCellBoundary = 90,
-        turn = 0, move = 0, fire = 0, strafe = 0,
-        gameEnd = 0,
+        turn = 0, move = 0, fire = 0, strafe = 0, gameEnd = 0,
         spriteLoop = 3, spriteLoopCount = 0,
         wallList = [],
         randMovCount = 0, randMovI = 0,
         miniMapCellSize,
         oldPxForMiniMap, oldPyForMiniMap,
-        startEnemyId = 100, firstSpriteID,
+        startEnemyId = 100, startPickupId = 50,
         enemyList = [], spriteList = [], respawnList = [],
         fpsCount = 0, ts = 0;
         //walkCount = 5, walkCountI = 0, walkCN = 0;
 
 var player = {
     health: 100,
-    attack: 100,
     ammo: 0,
     weapon: null,
     X: 0,
@@ -56,8 +54,8 @@ var maps = [
             [2,0,0,0,0,0,0,0,0,1],
             [1,1,2,1,2,1,2,1,2,1]
         ],
-        sizeX: 8192,
-        sizeY: 8192,
+        sizeX: 0,
+        sizeY: 0,
         cellWidth: 256,
         cell2n: 8,
         name: "Level 1",
@@ -136,8 +134,8 @@ var enemies = [
         spd: 10,
         atkDist: 512,
         rndDist: 756,
-        movTyp: 0, //0 is route, 1 is random, 2 is attack
-    },
+        movTyp: 0 //0 is route, 1 is random, 2 is attack
+    }
 
 ];
 
@@ -162,7 +160,7 @@ var cells = [
     {
         typ: 1,
         fn: "wall3.jpg",
-        tp: false,
+        tp: false
     },
     {
         typ: 2,
@@ -182,9 +180,7 @@ function copy(o) {
 
 function setup() {
     var i;
-    //create image
     map = maps[0];
-
     fps = document.getElementById("fps");
     viewPort = document.getElementById("view");
     viewPort.style.perspective = perspectiveDepth + "px";
@@ -200,9 +196,9 @@ function setup() {
     wallDiv.className = "walls";
     viewPort.appendChild(wallDiv);
 
-    mapSizeX = map.sizeX;
-    mapSizeY = map.sizeY;
     cellSize = map.cellWidth;
+    mapSizeX = map.mapData.length*cellSize;
+    mapSizeY = map.mapData[0].length*cellSize;
     halfCW = cellSize / 2;
     cell2n = map.cell2n;
     player.X = map.startX;
@@ -225,23 +221,39 @@ function setup() {
         startEnemyId++;
     }
     spriteList = map.initialPickups;
-    firstSpriteID = startEnemyId;
     for (i = 0; i < spriteList.length; i++) {
         var thisSprite = spriteList[i];
-        cells[startEnemyId] = copy(pickups[thisSprite.pickupID]);
-        cells[startEnemyId].mx = thisSprite.mx;
-        cells[startEnemyId].my = thisSprite.my;
-        cells[startEnemyId].cx = thisSprite.cx;
-        cells[startEnemyId].cy = thisSprite.cy;
-        cells[startEnemyId].mapId = startEnemyId;
-        map.mapData[thisSprite.cx][thisSprite.cy] = startEnemyId;
-        startEnemyId++;
+        cells[startPickupId] = copy(pickups[thisSprite.pickupID]);
+        cells[startPickupId].mx = thisSprite.mx;
+        cells[startPickupId].my = thisSprite.my;
+        cells[startPickupId].cx = thisSprite.cx;
+        cells[startPickupId].cy = thisSprite.cy;
+        cells[startPickupId].mapId = startPickupId;
+        map.mapData[thisSprite.cx][thisSprite.cy] = startPickupId;
+        startPickupId++;
     }
     updateView();
     genMap();
-    //setup keys
+    refactorMapArray();
     setUpKeys();
     setInterval(gameLoop, 10);
+}
+
+function refactorMapArray() {
+    var mapCell;
+    for (var i = 0; i < map.mapData.length; i++) {
+        for (var j = 0; j < map.mapData[0].length; j++){
+            mapCell = map.mapData[i][j];
+            map.mapData[i][j] = {};
+            map.mapData[i][j].cellType = 0;
+            map.mapData[i][j].pickup = 0;
+            map.mapData[i][j].enemy = 0;
+            map.mapData[i][j].bullet = 0;
+            if (mapCell < 50) { map.mapData[i][j].cellType = mapCell; }
+            else if (mapCell < 100) { map.mapData[i][j].pickup = mapCell; }
+            else map.mapData[i][j].enemy = mapCell;
+        }
+    }
 }
 
 function setUpKeys() {
@@ -255,59 +267,59 @@ function setUpKeys() {
 function keyClear() {
     turn = 0;
     move = 0;
-    fire = 0;
     strafe = 0;
+    fire = 0;
 }
 
 function keyDownHandler(e) {
     var kc = e.keyCode;
-    if (kc == 65) {
+    if (kc === 65) {
         strafe = 1;
     }
-    if (kc == 87) {
+    if (kc === 87) {
         move = 1;
     }
-    if (kc == 68) {
+    if (kc === 68) {
         strafe = -1;
     }
-    if (kc == 83) {
+    if (kc === 83) {
         move = -1;
     }
-    if (kc == 32) {
+    if (kc === 32) {
         fire = 1;
     }
-    if (kc == 13) {
+    if (kc === 13) {
         gameEnd = 1;
     }
-    if (kc == 39) {
+    if (kc === 39) {
         turn = -1;
     }
-    if (kc == 37) {
+    if (kc === 37) {
         turn = 1;
     }
 }
 
 function keyUpHandler(e) {
     var kc = e.keyCode;
-    if (kc == 65) {
+    if (kc === 65) {
         strafe = 0;
     }
-    if (kc == 87) {
+    if (kc === 87) {
         move = 0;
     }
-    if (kc == 68) {
+    if (kc === 68) {
         strafe = 0;
     }
-    if (kc == 83) {
+    if (kc === 83) {
         move = 0;
     }
-    if (kc == 32) {
+    if (kc === 32) {
         fire = 0;
     }
-    if (kc == 39) {
+    if (kc === 39) {
         turn = 0;
     }
-    if (kc == 37) {
+    if (kc === 37) {
         turn = 0;
     }
 }
@@ -327,22 +339,22 @@ function updateView() {
 }
 
 function equip() {
-    var wep = cells[map.mapData[player.cellX][player.cellY]];
+    var wep = cells[map.mapData[player.cellX][player.cellY].pickup];
     player.weapon = wep;
     player.ammo = wep.initialAmmo;
     cells.splice(wep.mapId, 1, null);
-    map.mapData[player.cellX][player.cellY] = wep.after;
+    map.mapData[player.cellX][player.cellY].pickup = wep.after;
 }
 
 function reload() {
     if (player.weapon !== null) {
-        var ammoPack = cells[map.mapData[player.cellX][player.cellY]];
+        var ammoPack = cells[map.mapData[player.cellX][player.cellY].pickup];
         if (player.ammo == player.weapon.maxAmmo) return;
         ammoPack.respawn = ammoPack.baseRespawn;
         player.ammo += ammoPack.ammoInc;
         player.ammo = (player.ammo > player.weapon.maxAmmo) ? player.weapon.maxAmmo : player.ammo;
         respawnList.push(ammoPack);
-        map.mapData[player.cellX][player.cellY] = ammoPack.after;
+        map.mapData[player.cellX][player.cellY].pickup = ammoPack.after;
     }
 }
 
@@ -352,17 +364,16 @@ function respawnTimer() {
         item = respawnList[i];
         item.respawn--;
         if (item.respawn === 0) {
-            map.mapData[item.cx][item.cy] = item.mapId;
+            map.mapData[item.cx][item.cy].pickup = item.mapId;
             respawnList.splice(i, 1);
         }
     }
 }
 
 function doMove() {
-    var movDir, strafeDir, newMapX, newMapY, moveInc = 10;
-    var CMC, CMCCell, mapX, mapY;
-    var playerDX, playerDY;
-
+    var movDir, strafeDir, newMapX, newMapY, moveInc = 10,
+            CMC, CMCCell, mapX, mapY,
+            playerDX, playerDY;
     if (turn != 0) {
         thisLeft += turn * step;
         playerFacingAngle += turn * angleStep;
@@ -395,7 +406,7 @@ function doMove() {
             }
             player.cellX = newMapX >>> cell2n;
             player.cellY = mapY >>> cell2n;
-            CMC = map.mapData[player.cellX][player.cellY];
+            CMC = map.mapData[player.cellX][player.cellY].cellType;
             CMCCell = cells[CMC];
             if (CMC && (CMCCell.typ == 1)) {
                 if (playerDX < 0) {
@@ -417,7 +428,7 @@ function doMove() {
             }
             player.cellX = mapX >>> cell2n;
             player.cellY = newMapY >>> cell2n;
-            CMC = map.mapData[player.cellX][player.cellY];
+            CMC = map.mapData[player.cellX][player.cellY].cellType;
             CMCCell = cells[CMC];
             if (CMC && (CMCCell.typ == 1)) {
                 if (playerDY < 0) {
@@ -431,8 +442,8 @@ function doMove() {
             }
         }
         updateMap();
-        if (cells[map.mapData[player.cellX][player.cellY]].onPickup) {
-            cells[map.mapData[player.cellX][player.cellY]].onPickup();
+        if (cells[map.mapData[player.cellX][player.cellY].pickup].onPickup) {
+            cells[map.mapData[player.cellX][player.cellY].pickup].onPickup();
         }
     }
     if (strafe != 0) {
@@ -454,7 +465,7 @@ function doMove() {
             }
             player.cellX = newMapX >>> cell2n;
             player.cellY = mapY >>> cell2n;
-            CMC = map.mapData[player.cellX][player.cellY];
+            CMC = map.mapData[player.cellX][player.cellY].cellType;
             CMCCell = cells[CMC];
             if (CMC && (CMCCell.typ == 1)) {
                 if (playerDX < 0) {
@@ -476,7 +487,7 @@ function doMove() {
             }
             player.cellX = mapX >>> cell2n;
             player.cellY = newMapY >>> cell2n;
-            CMC = map.mapData[player.cellX][player.cellY];
+            CMC = map.mapData[player.cellX][player.cellY].cellType;
             CMCCell = cells[CMC];
             if (CMC && (CMCCell.typ == 1)) {
                 if (playerDY < 0) {
@@ -526,12 +537,11 @@ function gameLoop() {
 }
 
 function genMap() {
-    var i, j;
-    var div;
+    var i, j, div;
     for (i = 0; i < map.mapData.length; i++) {
-        for (j = 0; j < map.mapData.length; j++) {
+        for (j = 0; j < map.mapData[0].length; j++) {
             div = document.createElement("div");
-            if (map.mapData[i][j] < 99) {
+            if (map.mapData[i][j] < 50) {
                 div.style.backgroundColor = cells[map.mapData[i][j]].mapCol;
             } else {
                 div.style.backgroundColor = cells[0].mapCol;
@@ -553,8 +563,8 @@ function updateMap() {
     var px = player.X >>> 8, py = player.Y >>> 8;
     document.getElementById(px + "," + py).style.backgroundColor = "white";
     if ((oldPxForMiniMap != px || oldPyForMiniMap != py) && oldPyForMiniMap !== undefined) {
-        if (map.mapData[oldPxForMiniMap][oldPyForMiniMap] < 99) {
-            document.getElementById(oldPxForMiniMap + "," + oldPyForMiniMap).style.backgroundColor = cells[map.mapData[oldPxForMiniMap][oldPyForMiniMap]].mapCol;
+        if (map.mapData[oldPxForMiniMap][oldPyForMiniMap].cellType) {
+            document.getElementById(oldPxForMiniMap + "," + oldPyForMiniMap).style.backgroundColor = cells[map.mapData[oldPxForMiniMap][oldPyForMiniMap].cellType].mapCol;
         } else {
             document.getElementById(oldPxForMiniMap + "," + oldPyForMiniMap).style.backgroundColor = cells[0].mapCol;
         }
@@ -568,11 +578,10 @@ function updateMap() {
 }
 
 function unravelEnemyPath(e) {
-    var path = [];
-    var pathPos, newPathPos = 0, moveType;
+    var path = [], pathPos, newPathPos = 0, moveType;
     for (pathPos = 0; pathPos < e.trkDat.length; pathPos += 2) {
         moveType = e.trkDat[pathPos];
-        for (var j = 0; j < e.trkDat[pathPos+1]; j++) {
+        for (var i = 0; i < e.trkDat[pathPos+1]; i++) {
             path[newPathPos] = moveType;
             newPathPos++;
         }
@@ -581,10 +590,10 @@ function unravelEnemyPath(e) {
 }
 
 function moveEnemies() {
-    var i, e;
-    var ex, ey, ed;
-    var spriteAng, mov;
-    for (i = 100; i < firstSpriteID; i++) {
+    var i, e,
+            ex, ey, ed,
+            spriteAng, mov;
+    for (i = 100; i < cells.length; i++) {
         e = cells[i];
         mov = e.trkDat[e.trkPos];
         ex = e.cx * cellSize + e.mx;
@@ -661,12 +670,12 @@ function eForwards(e, id) {
         walkCountI++
     }
     e.CN = "walk" + walkCN;*/
-    map.mapData[e.cx][e.cy] = 0;
+    map.mapData[e.cx][e.cy].enemy = 0;
     dy = Math.cos((e.rot - 1) * pi8) * e.spd;
     dx = -Math.sin((e.rot - 1) * pi8) * e.spd;
     if (dy > 0) {
         if ((e.my + dy) > halfCW) {
-            if (cells[map.mapData[e.cx][e.cy + 1]].tp) {
+            if (cells[map.mapData[e.cx][e.cy + 1].cellType].tp) {
                 if ((e.my + dy) > cellSize) {
                     e.my += dy;
                     e.my -= cellSize;
@@ -680,7 +689,7 @@ function eForwards(e, id) {
         }
     } else {
         if ((e.my + dy) < halfCW) {
-            if (cells[map.mapData[e.cx][e.cy - 1]].tp) {
+            if (cells[map.mapData[e.cx][e.cy - 1].cellType].tp) {
                 if ((e.my + dy) < 0) {
                     e.my += dy;
                     e.my += cellSize;
@@ -695,7 +704,7 @@ function eForwards(e, id) {
     }
     if (dx > 0) {
         if ((e.mx + dx) > halfCW) {
-            if (cells[map.mapData[e.cx + 1][e.cy]].tp) {
+            if (cells[map.mapData[e.cx + 1][e.cy].cellType].tp) {
                 if ((e.mx + dx) > cellSize) {
                     e.mx += dx;
                     e.mx -= cellSize;
@@ -709,7 +718,7 @@ function eForwards(e, id) {
         }
     } else {
         if ((e.mx + dx) < halfCW) {
-            if (cells[map.mapData[e.cx - 1][e.cy]].tp) {
+            if (cells[map.mapData[e.cx - 1][e.cy].cellType].tp) {
                 if ((e.mx + dx) < 0) {
                     e.mx += dx;
                     e.mx += cellSize;
@@ -722,16 +731,13 @@ function eForwards(e, id) {
             e.mx += dx;
         }
     }
-    map.mapData[e.cx][e.cy] = id;
+    map.mapData[e.cx][e.cy].enemy = id;
 }
 
 function render() {
-    var i, wli, tX, tZ, ang;
-    var wll = wallList.length;
-    var topOffset = 101;
+    var i, wli, tX, tZ, ang, topOffset = 101;
     wallDiv.innerHTML = ""; //remove old wall segments
-
-    for (i = 0; i < wll; i++) {
+    for (i = 0; i < wallList.length; i++) {
         wli = wallList[i];
         if (wli.typ > 2) {
             wli.div = document.createElement("DIV");
@@ -807,7 +813,8 @@ function rayCast() {
             countRay = startRay % q4, currentRay = countRay,
             cornerDX, cornerDY, rotClock, rotAnti, clockWallDeltaX, clockWallDeltaY,
             antiWallDeltaX, antiWallDeltaY, nextCornerX, nextCornerY, prevCornerX,
-            prevCornerY, prevCornerRayX, prevCornerRayY, prevCornerRayAngle;
+            prevCornerY, prevCornerRayX, prevCornerRayY, prevCornerRayAngle,
+            doBreak = false;
 
     wallList = [];
     if (currentRay < 0) {
@@ -888,161 +895,166 @@ function rayCast() {
                 break;
             }
             CMC = map.mapData[rayCellPosX][rayCellPosY];
-            CMCCell = cells[CMC];
+            for (var type in CMC) {
+                CMCCell = cells[CMC[type]];
+                if (CMC[type]) {
+                    if (CMCCell.typ < 3) { //wall or door
+                        cornerRayX = rayCellPosX * cellSize + cornerDX - player.X;
+                        cornerRayY = rayCellPosY * cellSize + cornerDY - player.Y;
+                        cornerRayAngle = InvTan(cornerRayX, cornerRayY);
+                        if ((currentRay > q3) && (cornerRayAngle < q1)) {
+                            cornerRayAngle += q4;
+                        }//if they are reversed
+                        else if ((cornerRayAngle > q3) && (currentRay < q1)) {
+                            cornerRayAngle -= q4;
+                        } //if they are reversed
+                        clockwise = (cornerRayAngle < currentRay);
 
-            if (CMC) {
-                if (CMCCell.typ < 3) { //wall or door
-                    cornerRayX = rayCellPosX * cellSize + cornerDX - player.X;
-                    cornerRayY = rayCellPosY * cellSize + cornerDY - player.Y;
-                    cornerRayAngle = InvTan(cornerRayX, cornerRayY);
-                    if ((currentRay > q3) && (cornerRayAngle < q1)) {
-                        cornerRayAngle += q4;
-                    }//if they are reversed
-                    else if ((cornerRayAngle > q3) && (currentRay < q1)) {
-                        cornerRayAngle -= q4;
-                    } //if they are reversed
-                    clockwise = (cornerRayAngle < currentRay);
-
-                    if ((oldRayCellPosX == rayCellPosX) && (oldRayCellPosY == rayCellPosY) && (clockwise == oldClock) && CMCCell && !CMCCell.tp) {
-                        break;
-                    }
-                    if ((oldRayCellPosX == rayCellPosX) && (oldRayCellPosY == rayCellPosY) && (clockwise == oldClock)) {
-                        continue;
-                    }
-                    oldRayCellPosX = rayCellPosX;
-                    oldRayCellPosY = rayCellPosY;
-                    oldClock = clockwise;
-
-                    if (clockwise) {
-                        //clock
-                        deltaX = player.X - rayCellPosX * cellSize - clockWallDeltaX;
-                        deltaY = player.Y - rayCellPosY * cellSize - clockWallDeltaY;
-                        if (!currList[deltaX]) {
-                            currList[deltaX] = [];
+                        if ((oldRayCellPosX == rayCellPosX) && (oldRayCellPosY == rayCellPosY) && (clockwise == oldClock) && CMCCell && !CMCCell.tp) {
+                            doBreak = true;
                         }
-                        if (!currList[deltaX][deltaY]) {
-                            currList[deltaX][deltaY] = true;
-                            dat = {};
+                        if ((oldRayCellPosX == rayCellPosX) && (oldRayCellPosY == rayCellPosY) && (clockwise == oldClock)) {
+                            break;
+                        }
+                        oldRayCellPosX = rayCellPosX;
+                        oldRayCellPosY = rayCellPosY;
+                        oldClock = clockwise;
+
+                        if (clockwise) {
                             //clock
-                            dat.R = rotClock;
-                            dat.X = -deltaX;
-                            dat.Z = -deltaY;
-                            dat.D = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
-                            dat.W = halfCW;
-                            dat.fn = CMCCell.fn;
-                            dat.typ = CMCCell.typ;
-                            wallList.push(dat);
+                            deltaX = player.X - rayCellPosX * cellSize - clockWallDeltaX;
+                            deltaY = player.Y - rayCellPosY * cellSize - clockWallDeltaY;
+                            if (!currList[deltaX]) {
+                                currList[deltaX] = [];
+                            }
+                            if (!currList[deltaX][deltaY]) {
+                                currList[deltaX][deltaY] = true;
+                                dat = {};
+                                //clock
+                                dat.R = rotClock;
+                                dat.X = -deltaX;
+                                dat.Z = -deltaY;
+                                dat.D = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
+                                dat.W = halfCW;
+                                dat.fn = CMCCell.fn;
+                                dat.typ = CMCCell.typ;
+                                wallList.push(dat);
+                            }
+                        }
+                        else {
+                            deltaX = player.X - rayCellPosX * cellSize - antiWallDeltaX;
+                            deltaY = player.Y - rayCellPosY * cellSize - antiWallDeltaY;
+                            if (!currList[deltaX]) {
+                                currList[deltaX] = [];
+                            }
+                            if (!currList[deltaX][deltaY]) {
+                                currList[deltaX][deltaY] = true;
+                                dat = {};
+                                //counterClock
+                                dat.R = rotAnti;
+                                dat.X = -deltaX;
+                                dat.Z = -deltaY;
+                                dat.D = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
+                                dat.W = halfCW;
+                                dat.fn = CMCCell.fn;
+                                dat.typ = CMCCell.typ;
+                                wallList.push(dat);
+                            }
                         }
                     }
-                    else {
-                        deltaX = player.X - rayCellPosX * cellSize - antiWallDeltaX;
-                        deltaY = player.Y - rayCellPosY * cellSize - antiWallDeltaY;
+                    else { //sprite
+                        //compute actual dx, dy
+                        deltaX = (rayCellPosX * cellSize + CMCCell.mx) - player.X;
+                        deltaY = (rayCellPosY * cellSize + CMCCell.my) - player.Y;
+                        dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                        //check if already added to wall list
                         if (!currList[deltaX]) {
                             currList[deltaX] = [];
                         }
                         if (!currList[deltaX][deltaY]) {
                             currList[deltaX][deltaY] = true;
-                            dat = {};
-                            //counterClock
-                            dat.R = rotAnti;
-                            dat.X = -deltaX;
-                            dat.Z = -deltaY;
-                            dat.D = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
-                            dat.W = halfCW;
-                            dat.fn = CMCCell.fn;
-                            dat.typ = CMCCell.typ;
-                            wallList.push(dat);
+                            //compute angle from sprite dx, dy
+                            spriteAng = InvTan(deltaX, deltaY);
+                            theta = playerFacingAngle - spriteAng;
+                            if (theta < 0) {
+                                theta += 360;
+                            }
+                            if (theta >= 360) {
+                                theta -= 360;
+                            }
+                            if ((theta < 50) || (theta > 310)) {
+                                //compute dX, dZ from angle of sprite - veiw port center angle
+                                var adj = Math.sin(theta * pi180) * 750;
+                                var hyp = Math.sqrt(adj * adj + 250 * 250);
+
+                                if (CMCCell.rot != undefined) {
+                                    spriteRot = CMCCell.rot + (spriteAng + 11.75) / 22.5 - 8;
+                                    if (spriteRot < 1) {
+                                        spriteRot += 16;
+                                    }
+                                    if (spriteRot > 16) {
+                                        spriteRot -= 16;
+                                    }
+                                    spriteRot = Math.floor(spriteRot);
+                                }
+                                else {
+                                    spriteRot = false;
+                                }
+
+                                //add to wall list
+                                dat = {};
+                                dat.R = theta;
+                                dat.X = -adj;
+                                dat.Z = -1100 + dist + hyp;
+                                dat.D = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
+                                dat.W = halfCW;
+                                dat.fn = CMCCell.fn;
+                                dat.typ = CMCCell.typ;
+                                dat.top = CMCCell.top;
+                                if (spriteRot) {
+                                    dat.CN = "rot" + spriteRot;
+                                }
+                                wallList.push(dat);
+                            }
                         }
                     }
                 }
-                else { //sprite
-                    //compute actual dx, dy
-                    deltaX = (rayCellPosX * cellSize + CMCCell.mx) - player.X;
-                    deltaY = (rayCellPosY * cellSize + CMCCell.my) - player.Y;
-                    dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-                    //check if already added to wall list
-                    if (!currList[deltaX]) {
-                        currList[deltaX] = [];
-                    }
-                    if (!currList[deltaX][deltaY]) {
-                        currList[deltaX][deltaY] = true;
-                        //compute angle from sprite dx, dy
-                        spriteAng = InvTan(deltaX, deltaY);
-                        theta = playerFacingAngle - spriteAng;
-                        if (theta < 0) {
-                            theta += 360;
+                if (CMCCell && !CMCCell.tp) {
+                    //compute next ray
+                    //if anticlock, then just set currentRay = cornerRay
+                    //else compute nextCornerRay and set current ray to that
+                    if (!clockwise) {
+                        if (cornerRayAngle >= countRay) {
+                            countRay = cornerRayAngle;
                         }
-                        if (theta >= 360) {
-                            theta -= 360;
-                        }
-                        if ((theta < 50) || (theta > 310)) {
-                            //compute dX, dZ from angle of sprite - veiw port center angle
-                            var adj = Math.sin(theta * pi180) * 750;
-                            var hyp = Math.sqrt(adj * adj + 250 * 250);
-
-                            if (CMCCell.rot != undefined) {
-                                spriteRot = CMCCell.rot + (spriteAng + 11.75) / 22.5 - 8;
-                                if (spriteRot < 1) {
-                                    spriteRot += 16;
-                                }
-                                if (spriteRot > 16) {
-                                    spriteRot -= 16;
-                                }
-                                spriteRot = Math.floor(spriteRot);
-                            }
-                            else {
-                                spriteRot = false;
-                            }
-
-                            //add to wall list
-                            dat = {};
-                            dat.R = theta;
-                            dat.X = -adj;
-                            dat.Z = -1100 + dist + hyp;
-                            dat.D = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
-                            dat.W = halfCW;
-                            dat.fn = CMCCell.fn;
-                            dat.typ = CMCCell.typ;
-                            dat.top = CMCCell.top;
-                            if (spriteRot) {
-                                dat.CN = "rot" + spriteRot;
-                            }
-                            wallList.push(dat);
+                        else {
+                            countRay = cornerRayAngle + q4;
                         }
                     }
+                    else {
+                        //compute nextCornerRay
+                        nextCornerRayX = rayCellPosX * cellSize + nextCornerX - player.X;
+                        nextCornerRayY = rayCellPosY * cellSize + nextCornerY - player.Y;
+                        nextCornerRayAngle = InvTan(nextCornerRayX, nextCornerRayY);
+                        if ((countRay > nextCornerRayAngle)) {
+                            nextCornerRayAngle += q4;
+                        } //if they are reversed
+                        countRay = nextCornerRayAngle;
+                    }
+                    doBreak = true;
                 }
             }
-            if (CMCCell && !CMCCell.tp) {
-                //compute next ray
-                //if anticlock, then just set currentRay = cornerRay
-                //else compute nextCornerRay and set current ray to that
-                if (!clockwise) {
-                    if (cornerRayAngle >= countRay) {
-                        countRay = cornerRayAngle;
-                    }
-                    else {
-                        countRay = cornerRayAngle + q4;
-                    }
-                }
-                else {
-                    //compute nextCornerRay
-                    nextCornerRayX = rayCellPosX * cellSize + nextCornerX - player.X;
-                    nextCornerRayY = rayCellPosY * cellSize + nextCornerY - player.Y;
-                    nextCornerRayAngle = InvTan(nextCornerRayX, nextCornerRayY);
-                    if ((countRay > nextCornerRayAngle)) {
-                        nextCornerRayAngle += q4;
-                    } //if they are reversed
-                    countRay = nextCornerRayAngle;
-                }
+            if (doBreak) {
+                doBreak = false;
                 break;
             }
-        }
-        while (true);
+        } while (true);
         countRay += rayStep;
         currentRay = countRay % q4;
     }
     while (countRay < endRay);
 
+    doBreak = false;
     startRay = playerFacingAngle - viewAngle;
     endRay = playerFacingAngle + viewAngle;
     countRay = endRay;
@@ -1139,107 +1151,109 @@ function rayCast() {
                 break;
             }
             CMC = map.mapData[rayCellPosX][rayCellPosY];
-            CMCCell = cells[CMC];
+            for (type in CMC) {
+                CMCCell = cells[CMC[type]];
+                if (CMC[type]) {
+                    if (CMCCell.typ < 3) { //wall or door
+                        cornerRayX = rayCellPosX * cellSize + cornerDX - player.X;
+                        cornerRayY = rayCellPosY * cellSize + cornerDY - player.Y;
+                        cornerRayAngle = InvTan(cornerRayX, cornerRayY);
+                        if ((currentRay > q3) && (cornerRayAngle < q1)) {
+                            cornerRayAngle += q4;
+                        }//if they are reversed
+                        else if ((cornerRayAngle > q3) && (currentRay < q1)) {
+                            cornerRayAngle -= q4;
+                        } //if they are reversed
+                        clockwise = (cornerRayAngle < currentRay);
 
-            if (CMC) {
-                if (CMCCell.typ < 3) { //wall or door
-                    cornerRayX = rayCellPosX * cellSize + cornerDX - player.X;
-                    cornerRayY = rayCellPosY * cellSize + cornerDY - player.Y;
-                    cornerRayAngle = InvTan(cornerRayX, cornerRayY);
-                    if ((currentRay > q3) && (cornerRayAngle < q1)) {
-                        cornerRayAngle += q4;
-                    }//if they are reversed
-                    else if ((cornerRayAngle > q3) && (currentRay < q1)) {
-                        cornerRayAngle -= q4;
-                    } //if they are reversed
-                    clockwise = (cornerRayAngle < currentRay);
-
-                    if ((oldRayCellPosX == rayCellPosX) && (oldRayCellPosY == rayCellPosY) && (clockwise == oldClock) && CMCCell && !CMCCell.tp) {
-                        break;
-                    }
-                    if ((oldRayCellPosX == rayCellPosX) && (oldRayCellPosY == rayCellPosY) && (clockwise == oldClock)) {
-                        continue;
-                    }
-
-                    oldRayCellPosX = rayCellPosX;
-                    oldRayCellPosY = rayCellPosY;
-                    oldClock = clockwise;
-
-                    if (clockwise) {
-                        //clock
-                        deltaX = player.X - rayCellPosX * cellSize - clockWallDeltaX;
-                        deltaY = player.Y - rayCellPosY * cellSize - clockWallDeltaY;
-                        if (!currList[deltaX]) {
-                            currList[deltaX] = [];
+                        if ((oldRayCellPosX == rayCellPosX) && (oldRayCellPosY == rayCellPosY) && (clockwise == oldClock) && CMCCell && !CMCCell.tp) {
+                            doBreak = true;
                         }
-                        if (!currList[deltaX][deltaY]) {
-                            currList[deltaX][deltaY] = true;
-                            dat = {};
+                        if ((oldRayCellPosX == rayCellPosX) && (oldRayCellPosY == rayCellPosY) && (clockwise == oldClock)) {
+                            break;
+                        }
+
+                        oldRayCellPosX = rayCellPosX;
+                        oldRayCellPosY = rayCellPosY;
+                        oldClock = clockwise;
+
+                        if (clockwise) {
                             //clock
-                            dat.R = rotClock;
-                            dat.X = -deltaX;
-                            dat.Z = -deltaY;
-                            dat.D = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
-                            dat.W = halfCW;
-                            dat.fn = CMCCell.fn;
-                            dat.typ = CMCCell.typ;
-                            if (CMCCell.rot) {
-                                dat.CN = "rot" + CMCCell.rot;
+                            deltaX = player.X - rayCellPosX * cellSize - clockWallDeltaX;
+                            deltaY = player.Y - rayCellPosY * cellSize - clockWallDeltaY;
+                            if (!currList[deltaX]) {
+                                currList[deltaX] = [];
                             }
-                            wallList.push(dat);
+                            if (!currList[deltaX][deltaY]) {
+                                currList[deltaX][deltaY] = true;
+                                dat = {};
+                                //clock
+                                dat.R = rotClock;
+                                dat.X = -deltaX;
+                                dat.Z = -deltaY;
+                                dat.D = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
+                                dat.W = halfCW;
+                                dat.fn = CMCCell.fn;
+                                dat.typ = CMCCell.typ;
+                                if (CMCCell.rot) {
+                                    dat.CN = "rot" + CMCCell.rot;
+                                }
+                                wallList.push(dat);
+                            }
+                        }
+                        else {
+                            deltaX = player.X - rayCellPosX * cellSize - antiWallDeltaX;
+                            deltaY = player.Y - rayCellPosY * cellSize - antiWallDeltaY;
+                            if (!currList[deltaX]) {
+                                currList[deltaX] = [];
+                            }
+                            if (!currList[deltaX][deltaY]) {
+                                currList[deltaX][deltaY] = true;
+                                dat = {};
+                                //counterClock
+                                dat.R = rotAnti;
+                                dat.X = -deltaX;
+                                dat.Z = -deltaY;
+                                dat.D = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
+                                dat.W = halfCW;
+                                dat.fn = CMCCell.fn;
+                                dat.typ = CMCCell.typ;
+                                if (CMCCell.rot) {
+                                    dat.CN = "rot" + CMCCell.rot;
+                                }
+                                wallList.push(dat);
+                            }
+                        }
+                    }
+                }
+                if (CMCCell && !CMCCell.tp) {
+                    //compute next ray
+                    //if anticlock, then just set currentRay = cornerRay
+                    //else compute prevCornerRay and set current ray to that
+                    if (clockwise) {
+                        if (countRay > cornerRayAngle) {
+                            countRay = cornerRayAngle;
+                        }
+                        else {
+                            countRay = cornerRayAngle - q4;
                         }
                     }
                     else {
-                        deltaX = player.X - rayCellPosX * cellSize - antiWallDeltaX;
-                        deltaY = player.Y - rayCellPosY * cellSize - antiWallDeltaY;
-                        if (!currList[deltaX]) {
-                            currList[deltaX] = [];
-                        }
-                        if (!currList[deltaX][deltaY]) {
-                            currList[deltaX][deltaY] = true;
-                            dat = {};
-                            //counterClock
-                            dat.R = rotAnti;
-                            dat.X = -deltaX;
-                            dat.Z = -deltaY;
-                            dat.D = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
-                            dat.W = halfCW;
-                            dat.fn = CMCCell.fn;
-                            dat.typ = CMCCell.typ;
-                            if (CMCCell.rot) {
-                                dat.CN = "rot" + CMCCell.rot;
-                            }
-                            wallList.push(dat);
-                        }
+                        //compute prevCornerRay
+                        prevCornerRayX = rayCellPosX * cellSize + prevCornerX - player.X;
+                        prevCornerRayY = rayCellPosY * cellSize + prevCornerY - player.Y;
+                        prevCornerRayAngle = InvTan(prevCornerRayX, prevCornerRayY);
+                        if ((countRay < prevCornerRayAngle)) {
+                            prevCornerRayAngle -= q4;
+                        } //if they are reversed
+                        countRay = prevCornerRayAngle;
+
                     }
+                    doBreak = true;
                 }
             }
-            else { //sprite
-
-            }
-            if (CMCCell && !CMCCell.tp) {
-                //compute next ray
-                //if anticlock, then just set currentRay = cornerRay
-                //else compute prevCornerRay and set current ray to that
-                if (clockwise) {
-                    if (countRay > cornerRayAngle) {
-                        countRay = cornerRayAngle;
-                    }
-                    else {
-                        countRay = cornerRayAngle - q4;
-                    }
-                }
-                else {
-                    //compute prevCornerRay
-                    prevCornerRayX = rayCellPosX * cellSize + prevCornerX - player.X;
-                    prevCornerRayY = rayCellPosY * cellSize + prevCornerY - player.Y;
-                    prevCornerRayAngle = InvTan(prevCornerRayX, prevCornerRayY);
-                    if ((countRay < prevCornerRayAngle)) {
-                        prevCornerRayAngle -= q4;
-                    } //if they are reversed
-                    countRay = prevCornerRayAngle;
-
-                }
+            if (doBreak) {
+                doBreak = false;
                 break;
             }
         }
