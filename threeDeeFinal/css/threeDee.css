@@ -2,15 +2,34 @@ BODY {
 	background-color: #202020;
 }
 
-#fps {
+.info {
 	position: absolute;
-	bottom: 50px;
-	left: 50%;
 	background-color: white;
 	border: 1px inset;
-	width: 50px;
+	width: 100px;
 	height: 24px;
 	font-size: 20px;
+}
+
+#fps {
+	bottom: 50px;
+	left: 50%;
+	width: 50px;
+}
+
+#mapX {
+	bottom: 50px;
+	left: 20px;
+}
+
+#mapY {
+	bottom: 50px;
+	left: 140px;
+}
+
+#ang {
+	bottom: 90px;
+	left: 20px;
 }
 
 #view {
