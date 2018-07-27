@@ -24,7 +24,10 @@ var fps, background, floor, wallDiv, viewPort, map,
         oldPxForMiniMap, oldPyForMiniMap,
         startEnemyId = 100, startPickupId = 50,
         enemyList = [], spriteList = [], respawnList = [],
-        fpsCount = 0, ts = 0;
+        fpsCount = 0, gameLoopTs = 0,
+        oldFireTs = 0, bulletVelocity = 10, bulletCount = 0;
+
+var bulletLocationList = [];
 
 var player = {
     health: 100,
@@ -40,6 +43,13 @@ var player = {
     }
 };
 
+var emptyCell = {
+    cellType: 0,
+    pickup: 0,
+    enemy: 0,
+    bullet: 0
+};
+
 var maps = [
     {
         mapData: [
@@ -47,13 +57,13 @@ var maps = [
             [0,0,0,0,1,0,0,0,0,0,1,0,0,0,0],
             [0,0,0,0,1,0,0,0,0,0,1,0,0,0,0],
             [0,0,0,0,1,0,0,0,0,0,1,0,0,0,0],
-            [1,1,1,1,1,1,1,4,1,1,1,1,1,1,1],
-            [1,0,0,0,1,0,0,0,0,0,1,0,0,0,1],
-            [1,0,0,0,1,0,0,0,0,0,1,0,0,0,1],
-            [1,0,0,0,4,0,0,0,0,0,4,0,0,0,1],
-            [1,0,0,0,1,0,0,0,0,0,1,0,0,0,1],
-            [1,0,0,0,1,0,0,0,0,0,1,0,0,0,1],
-            [1,1,1,1,1,1,1,4,1,1,1,1,1,1,1],
+            [1,1,1,1,1,0,0,0,0,0,1,1,1,1,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,1,1,1,1,0,0,0,0,0,1,1,1,1,1],
             [0,0,0,0,1,0,0,0,0,0,1,0,0,0,0],
             [0,0,0,0,1,0,0,0,0,0,1,0,0,0,0],
             [0,0,0,0,1,0,0,0,0,0,1,0,0,0,0],
@@ -68,10 +78,11 @@ var maps = [
         startX: 1920,
         startY: 1920,
         initialEnemies: [
-            //{cx: 8, mx: 64, cy: 8, my: 192, typ: 0, id: 0, rot: 9, trkPos: 0, trkDat:[ 2, 64, -1, 8]},
-            //{cx: 8, mx: 128, cy: 2, my: 128, typ: 0, id: 0, rot: 1, trkPos: 0, trkDat:[ 2, 64, -1, 8]}
+            //{cx: 7, mx: 64, cy: 10, my: 192, type: 0, id: 0, rot: 9, trkPos: 0, trkDat:[ 2, 64, -1, 8]}
+            //{cx: 8, mx: 128, cy: 2, my: 128, type: 0, id: 0, rot: 1, trkPos: 0, trkDat:[/* 2, 64, -1, 8*/]}
         ],
         initialPickups: [
+            {cx: 5, mx: 128, cy: 5, my: 128, pickupID: 1}
             /*{cx: 2, mx: 128, cy: 6, my: 128, pickupID: 0},
             {cx: 4, mx: 128, cy: 6, my: 128, pickupID: 2},
             {cx: 6, mx: 128, cy: 6, my: 128, pickupID: 3}*/
@@ -84,9 +95,11 @@ var pickups = [
         wepID: 0,
         damage: 5,
         fireRate: 4,
+        fireTimePeriod: 0.25,
         initialAmmo: 20,
         maxAmmo: 100,
         bgImage: "../img/wand.png",
+        bulletBgImage: "../img/bulletTest.png",
         tp: true,
         type: 5,
         after: 0,
@@ -96,9 +109,11 @@ var pickups = [
         wepID: 1,
         damage: 10,
         fireRate: 2,
+        fireTimePeriod: 0.5,
         initialAmmo: 15,
         maxAmmo: 50,
         bgImage: "../img/staff.png",
+        bulletBgImage: "../img/bulletTest.png",
         tp: true,
         type: 5,
         after: 0,
@@ -192,6 +207,7 @@ function copy(o) {
 
 function setup() {
     var i;
+    //setting up view
     map = maps[0];
     fps = document.getElementById("fps");
     viewPort = document.getElementById("view");
@@ -207,7 +223,7 @@ function setup() {
     wallDiv = document.createElement("DIV");
     wallDiv.className = "walls";
     viewPort.appendChild(wallDiv);
-
+    //setting up globals
     cellSize = map.cellWidth;
     mapSizeX = map.mapData.length;
     mapSizeY = map.mapData[0].length;
@@ -219,6 +235,7 @@ function setup() {
     player.Y = map.startY;
     maxLeft = map.maxLeft;
     miniMapCellSize = (10/cellSize);
+    //setting up enemies and sprites
     enemyList = map.initialEnemies;
     for (i = 0; i < enemyList.length; i++) {
         var thisEnemy = enemyList[i];
@@ -258,6 +275,7 @@ function refactorMapArray() {
     for (var i = 0; i < mapSizeX; i++) {
         for (var j = 0; j < mapSizeY; j++){
             mapCell = map.mapData[i][j];
+            if (mapCell === 0) continue;
             map.mapData[i][j] = {};
             map.mapData[i][j].cellType = 0;
             map.mapData[i][j].pickup = 0;
@@ -268,6 +286,20 @@ function refactorMapArray() {
             else map.mapData[i][j].enemy = mapCell;
         }
     }
+}
+
+function checkIfCellEmpty(i, j) {
+    if (JSON.stringify(map.mapData[i][j]) === JSON.stringify(emptyCell)) {
+        map.mapData[i][j] = 0;
+    }
+}
+
+function createEmptyCellObject(i , j) {
+    map.mapData[i][j] = {};
+    map.mapData[i][j].cellType = 0;
+    map.mapData[i][j].pickup = 0;
+    map.mapData[i][j].enemy = 0;
+    map.mapData[i][j].bullet = 0;
 }
 
 function setUpKeys() {
@@ -350,8 +382,10 @@ function openDoor() {
     else if (ang >= 90 && ang < 180) dx = 1;
     else if (ang >= 180 && ang < 270) dy = -1;
     else dx = -1;
-    if (cells[map.mapData[player.cellX + dx][player.cellY + dy].cellType].type == 2) {
+    if (map.mapData[player.cellX + dx][player.cellY + dy] && cells[map.mapData[player.cellX + dx][player.cellY + dy].cellType].type == 2) {
         map.mapData[player.cellX + dx][player.cellY + dy].cellType = cells[map.mapData[player.cellX + dx][player.cellY + dy].cellType].after;
+        document.getElementById((player.cellX+dx) + "," + (player.cellY+dy)).style.backgroundColor = cells[0].mapCol;
+
     }
 }
 
@@ -375,6 +409,7 @@ function equip() {
     player.ammo = wep.initialAmmo;
     cells.splice(wep.mapId, 1, null);
     map.mapData[player.cellX][player.cellY].pickup = wep.after;
+    checkIfCellEmpty(player.cellX, player.cellY)
 }
 
 function reload() {
@@ -386,6 +421,7 @@ function reload() {
         player.ammo = (player.ammo > player.weapon.maxAmmo) ? player.weapon.maxAmmo : player.ammo;
         respawnList.push(ammoPack);
         map.mapData[player.cellX][player.cellY].pickup = ammoPack.after;
+        checkIfCellEmpty(player.cellX, player.cellY)
     }
 }
 
@@ -395,6 +431,7 @@ function respawnTimer() {
         item = respawnList[i];
         item.respawn--;
         if (item.respawn === 0) {
+            if (map.mapData[item.cx][item.cy] === 0) createEmptyCellObject(item.cx, item.cy);
             map.mapData[item.cx][item.cy].pickup = item.mapId;
             respawnList.splice(i, 1);
         }
@@ -437,7 +474,7 @@ function doMove() {
             }
             player.cellX = newMapX >>> cell2n;
             player.cellY = mapY >>> cell2n;
-            CMC = map.mapData[player.cellX][player.cellY].cellType;
+            CMC = (map.mapData[player.cellX][player.cellY]) ? map.mapData[player.cellX][player.cellY].cellType : 0;
             CMCCell = cells[CMC];
             if (CMC && !CMCCell.tp) {
                 if (playerDX < 0) {
@@ -459,7 +496,7 @@ function doMove() {
             }
             player.cellX = mapX >>> cell2n;
             player.cellY = newMapY >>> cell2n;
-            CMC = map.mapData[player.cellX][player.cellY].cellType;
+            CMC = (map.mapData[player.cellX][player.cellY]) ? map.mapData[player.cellX][player.cellY].cellType : 0;
             CMCCell = cells[CMC];
             if (CMC && !CMCCell.tp) {
                 if (playerDY < 0) {
@@ -473,7 +510,7 @@ function doMove() {
             }
         }
         updateMap();
-        if (cells[map.mapData[player.cellX][player.cellY].pickup].onPickup) {
+        if (map.mapData[player.cellX][player.cellY] && cells[map.mapData[player.cellX][player.cellY].pickup].onPickup) {
             cells[map.mapData[player.cellX][player.cellY].pickup].onPickup();
         }
     }
@@ -496,7 +533,7 @@ function doMove() {
             }
             player.cellX = newMapX >>> cell2n;
             player.cellY = mapY >>> cell2n;
-            CMC = map.mapData[player.cellX][player.cellY].cellType;
+            CMC = (map.mapData[player.cellX][player.cellY]) ? map.mapData[player.cellX][player.cellY].cellType : 0;
             CMCCell = cells[CMC];
             if (CMC && (CMCCell.type == 1)) {
                 if (playerDX < 0) {
@@ -518,7 +555,7 @@ function doMove() {
             }
             player.cellX = mapX >>> cell2n;
             player.cellY = newMapY >>> cell2n;
-            CMC = map.mapData[player.cellX][player.cellY].cellType;
+            CMC = (map.mapData[player.cellX][player.cellY]) ? map.mapData[player.cellX][player.cellY].cellType : 0;
             CMCCell = cells[CMC];
             if (CMC && (CMCCell.type == 1)) {
                 if (playerDY < 0) {
@@ -534,9 +571,13 @@ function doMove() {
         updateMap();
     }
     if (fire != 0) {
-        //check frequency
-        //check for type of attack
-        //add to bullet list
+        if (player.weapon) {
+            var ts = Math.round((new Date()).getTime());
+            if (ts > (oldFireTs + (player.weapon.fireTimePeriod * 1000))) {
+                fireBullet();
+                oldFireTs = ts;
+            }
+        }
     }
     document.getElementById("mapX").innerHTML = "Map x: " + player.cellX;
     document.getElementById("mapY").innerHTML = "Map y: " + player.cellY;
@@ -545,7 +586,7 @@ function doMove() {
 
 function gameLoop() {
     var tNow = new Date().getSeconds();
-    if (ts != tNow) {
+    if (gameLoopTs != tNow) {
         fps.innerHTML = fpsCount + "fps";
         fpsCount = 0;
         respawnTimer();
@@ -553,9 +594,9 @@ function gameLoop() {
     else {
         fpsCount++;
     }
-    ts = tNow;
+    gameLoopTs = tNow;
     doMove();
-    //update any player bullets
+    updateBullets();
     //check for enemy death
     if (spriteLoopCount == spriteLoop) {
         moveEnemies();
@@ -568,7 +609,10 @@ function gameLoop() {
 }
 
 function genMap() {
-    var i, j, div;
+    player.updateCXCY();
+    var i, j, div, translateX, translateY;
+    translateX = 87.5 - (player.cellX*10);
+    translateY = 87.5 - (player.cellY*10);
     for (i = 0; i < mapSizeX; i++) {
         for (j = 0; j < mapSizeY; j++) {
             div = document.createElement("div");
@@ -577,8 +621,8 @@ function genMap() {
             } else {
                 div.style.backgroundColor = cells[0].mapCol;
             }
-            div.style.top = Math.ceil(i * 10 + (miniMapCellSize * (mapSizeXpx - map.startX))) + "px";
-            div.style.left = Math.ceil(j * 10 + (miniMapCellSize * (mapSizeYpx - map.startY))) + "px";
+            div.style.top = Math.ceil(i*10 + (translateX))-5+"px";
+            div.style.left = Math.ceil(j*10 + (translateY))-5+"px";
             div.className = "mapCell";
             div.id = i + "," + j;
             document.getElementById("map").appendChild(div);
@@ -606,6 +650,103 @@ function updateMap() {
     }
     oldPxForMiniMap = player.cellX;
     oldPyForMiniMap = player.cellY;
+}
+
+function fireBullet() {
+    var bullet = {}, bulletListEntry = {};
+    bullet.cy = player.cellY;
+    bullet.cx = player.cellX;
+    bullet.mx = player.X - (player.cellX * cellSize);
+    bullet.my = player.Y - (player.cellY * cellSize);
+    bullet.dy = Math.cos(playerFacingAngle * pi180) * bulletVelocity;
+    bullet.dx = Math.sin(playerFacingAngle * pi180) * bulletVelocity;
+    bullet.type = 5;
+    bullet.dmg = player.weapon.damage;
+    bullet.bgImage = player.weapon.bulletBgImage;
+
+    if (map.mapData[player.cellX][player.cellY] === 0) {
+        createEmptyCellObject(player.cellX, player.cellY);
+        map.mapData[player.cellX][player.cellY].bullet = []
+    } else if (map.mapData[player.cellX][player.cellY].bullet === 0) {
+        map.mapData[player.cellX][player.cellY].bullet = []
+    }
+    bulletListEntry.x = player.cellX;
+    bulletListEntry.y = player.cellY;
+    if (!bulletLocationList[player.cellX]) {
+        bulletLocationList[player.cellX] = []
+    }
+    bulletLocationList[player.cellX][player.cellY] = bulletListEntry;
+    bulletCount++;
+    map.mapData[player.cellX][player.cellY].bullet.push(bullet);
+}
+
+function updateBullets() {
+    var bulletArray, bulletArrayLength, xChanged = 0, yChanged = 0, bulletsRemoved = 0;
+    for (var i = 0; i < bulletLocationList.length; i++) {
+        if (!bulletLocationList[i]) continue;
+        for (var j = 0; j < bulletLocationList[i].length; j++) {
+            if (!bulletLocationList[i][j]) continue;
+            bulletArray = map.mapData[bulletLocationList[i][j].x][bulletLocationList[i][j].y].bullet;
+            bulletArrayLength = bulletArray.length;
+            bulletsRemoved = 0;
+            for (var k = 0; k < bulletArrayLength; k++) {
+                xChanged = 0;
+                yChanged = 0;
+                bulletArray[k - bulletsRemoved].mx += bulletArray[k - bulletsRemoved].dx;
+                bulletArray[k - bulletsRemoved].my += bulletArray[k - bulletsRemoved].dy;
+                if (bulletArray[k - bulletsRemoved].mx > cellSize) {
+                    bulletArray[k - bulletsRemoved].cx += 1;
+                    bulletArray[k - bulletsRemoved].mx -= cellSize;
+                    xChanged = 1;
+                }
+                if (bulletArray[k - bulletsRemoved].my > cellSize) {
+                    bulletArray[k - bulletsRemoved].cy += 1;
+                    bulletArray[k - bulletsRemoved].my -= cellSize;
+                    yChanged = 1;
+                }
+                if (bulletArray[k - bulletsRemoved].mx < 0) {
+                    bulletArray[k - bulletsRemoved].cx -= 1;
+                    bulletArray[k - bulletsRemoved].mx += cellSize;
+                    xChanged = -1;
+                }
+                if (bulletArray[k - bulletsRemoved].my < 0) {
+                    bulletArray[k - bulletsRemoved].cy -= 1;
+                    bulletArray[k - bulletsRemoved].my += cellSize;
+                    yChanged = -1;
+                }
+                if (xChanged || yChanged) {
+                    if (map.mapData[i + xChanged][j + yChanged].cellType) {
+                        if (!cells[map.mapData[i + xChanged][j + yChanged].cellType].tp) {
+                            bulletArray.splice(k - bulletsRemoved, 1);
+                            bulletLocationList[i][j] = null;
+                            checkBulletListEmpty(i, j);
+                            checkIfCellEmpty(i, j);
+                            bulletsRemoved++;
+                            continue;
+                        }
+                    }
+                    if (map.mapData[i + xChanged][j + yChanged] === 0) createEmptyCellObject(i + xChanged, j + yChanged);
+                    if (map.mapData[i + xChanged][j + yChanged].bullet === 0) map.mapData[i + xChanged][j + yChanged].bullet = [];
+                    map.mapData[i + xChanged][j + yChanged].bullet.push(bulletArray[k]);
+                    bulletArray.splice(k - bulletsRemoved, 1);
+                    if (!bulletLocationList[i + xChanged]) bulletLocationList[i + xChanged] = [];
+                    bulletLocationList[i + xChanged][j + yChanged] = bulletLocationList[i][j];
+                    bulletLocationList[i + xChanged][j + yChanged].x += xChanged;
+                    bulletLocationList[i + xChanged][j + yChanged].y += yChanged;
+                    bulletLocationList[i][j] = null;
+                    checkBulletListEmpty(i, j);
+                    checkIfCellEmpty(i, j);
+                    bulletsRemoved++;
+                }
+            }
+        }
+    }
+}
+
+function checkBulletListEmpty(i, j) {
+    var bulletArray = map.mapData[i][j].bullet;
+    if (map.mapData[i][j] === 0 || bulletArray === 0) return;
+    if (bulletArray.length === 0) map.mapData[i][j].bullet = 0;
 }
 
 function unravelEnemyPath(e) {
@@ -698,8 +839,9 @@ function eForwards(e, id) {
     dx = -Math.sin((e.rot - 1) * pi8) * e.spd;
     if (dy > 0) {
         if ((e.my + dy) > halfCW) {
-            if (cells[map.mapData[e.cx][e.cy + 1].cellType].tp) {
+            if (!map.mapData[e.cx][e.cy + 1] || cells[map.mapData[e.cx][e.cy + 1].cellType].tp) {
                 if ((e.my + dy) > cellSize) {
+                    checkIfCellEmpty(e.cx, e.cy);
                     e.my += dy;
                     e.my -= cellSize;
                     e.cy += 1;
@@ -712,8 +854,9 @@ function eForwards(e, id) {
         }
     } else {
         if ((e.my + dy) < halfCW) {
-            if (cells[map.mapData[e.cx][e.cy - 1].cellType].tp) {
+            if (!map.mapData[e.cx][e.cy - 1] || cells[map.mapData[e.cx][e.cy - 1].cellType].tp) {
                 if ((e.my + dy) < 0) {
+                    checkIfCellEmpty(e.cx, e.cy);
                     e.my += dy;
                     e.my += cellSize;
                     e.cy -= 1;
@@ -727,8 +870,9 @@ function eForwards(e, id) {
     }
     if (dx > 0) {
         if ((e.mx + dx) > halfCW) {
-            if (cells[map.mapData[e.cx + 1][e.cy].cellType].tp) {
+            if (!map.mapData[e.cx + 1][e.cy] || cells[map.mapData[e.cx + 1][e.cy].cellType].tp) {
                 if ((e.mx + dx) > cellSize) {
+                    checkIfCellEmpty(e.cx, e.cy);
                     e.mx += dx;
                     e.mx -= cellSize;
                     e.cx += 1;
@@ -741,8 +885,9 @@ function eForwards(e, id) {
         }
     } else {
         if ((e.mx + dx) < halfCW) {
-            if (cells[map.mapData[e.cx - 1][e.cy].cellType].tp) {
+            if (!map.mapData[e.cx - 1][e.cy] || cells[map.mapData[e.cx - 1][e.cy].cellType].tp) {
                 if ((e.mx + dx) < 0) {
+                    checkIfCellEmpty(e.cx, e.cy);
                     e.mx += dx;
                     e.mx += cellSize;
                     e.cx -= 1;
@@ -753,6 +898,9 @@ function eForwards(e, id) {
         } else {
             e.mx += dx;
         }
+    }
+    if (map.mapData[e.cx][e.cy] === 0) {
+        createEmptyCellObject(e.cx, e.cy);
     }
     map.mapData[e.cx][e.cy].enemy = id;
 }
@@ -837,7 +985,8 @@ function rayCast() {
             cornerDX, cornerDY, rotClock, rotAnti, clockWallDeltaX, clockWallDeltaY,
             antiWallDeltaX, antiWallDeltaY, nextCornerX, nextCornerY, prevCornerX,
             prevCornerY, prevCornerRayX, prevCornerRayY, prevCornerRayAngle,
-            doBreak = false;
+            doBreak = false,
+            bullets, bullet;
 
     wallList = [];
     if (currentRay < 0) {
@@ -921,7 +1070,7 @@ function rayCast() {
             for (var type in CMC) {
                 CMCCell = cells[CMC[type]];
                 if (CMC[type]) {
-                    if (CMCCell.type < 3) { //wall or door
+                    if ((CMCCell && CMCCell.type < 3) || CMC[type].type < 3) { //wall or door
                         cornerRayX = rayCellPosX * cellSize + cornerDX - player.X;
                         cornerRayY = rayCellPosY * cellSize + cornerDY - player.Y;
                         cornerRayAngle = InvTan(cornerRayX, cornerRayY);
@@ -960,7 +1109,7 @@ function rayCast() {
                                 dat.D = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
                                 dat.W = halfCW;
                                 dat.bgImage = CMCCell.bgImage;
-                                dat.typ = CMCCell.type;
+                                dat.type = CMCCell.type;
                                 wallList.push(dat);
                             }
                         }
@@ -980,12 +1129,51 @@ function rayCast() {
                                 dat.D = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
                                 dat.W = halfCW;
                                 dat.bgImage = CMCCell.bgImage;
-                                dat.typ = CMCCell.type;
+                                dat.type = CMCCell.type;
                                 wallList.push(dat);
                             }
                         }
                     }
-                    else { //sprite
+                    else if (!CMCCell) { // bullet
+                        bullets = CMC[type];
+                        for (var x = 0; x < bullets.length; x++) {
+                            bullet = bullets[x];
+                            deltaX = (rayCellPosX * cellSize + bullet.mx) - player.X;
+                            deltaY = (rayCellPosY * cellSize + bullet.my) - player.Y;
+                            dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                            if (!currList[deltaX]) {
+                                currList[deltaX] = [];
+                            }
+                            if (!currList[deltaX][deltaY]) {
+                                currList[deltaX][deltaY] = true;
+                                //compute angle from sprite dx, dy
+                                spriteAng = InvTan(deltaX, deltaY);
+                                theta = playerFacingAngle - spriteAng;
+                                if (theta < 0) {
+                                    theta += 360;
+                                }
+                                if (theta >= 360) {
+                                    theta -= 360;
+                                }
+                                if ((theta < 50) || (theta > 310)) {
+                                    //compute dX, dZ from angle of bullet - veiw port center angle
+                                    var bulletAdj = Math.sin(theta * pi180) * 750;
+                                    var bulletHyp = Math.sqrt(bulletAdj * bulletAdj + 250 * 250);
+                                    dat = {};
+                                    dat.R = theta;
+                                    dat.X = -bulletAdj;
+                                    dat.Z = -1100 + dist + bulletHyp;
+                                    dat.D = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
+                                    dat.W = halfCW;
+                                    dat.bgImage = bullet.bgImage;
+                                    dat.type = bullet.type;
+                                    dat.top = bullet.top;
+                                    wallList.push(dat);
+                                }
+                            }
+                        }
+                    }
+                    else { //sprite or bullet
                         //compute actual dx, dy
                         deltaX = (rayCellPosX * cellSize + CMCCell.mx) - player.X;
                         deltaY = (rayCellPosY * cellSize + CMCCell.my) - player.Y;
@@ -1007,8 +1195,8 @@ function rayCast() {
                             }
                             if ((theta < 50) || (theta > 310)) {
                                 //compute dX, dZ from angle of sprite - veiw port center angle
-                                var adj = Math.sin(theta * pi180) * 750;
-                                var hyp = Math.sqrt(adj * adj + 250 * 250);
+                                var spriteAdj = Math.sin(theta * pi180) * 750;
+                                var spriteHyp = Math.sqrt(spriteAdj * spriteAdj + 250 * 250);
 
                                 if (CMCCell.rot != undefined) {
                                     spriteRot = CMCCell.rot + (spriteAng + 11.75) / 22.5 - 8;
@@ -1027,12 +1215,12 @@ function rayCast() {
                                 //add to wall list
                                 dat = {};
                                 dat.R = theta;
-                                dat.X = -adj;
-                                dat.Z = -1100 + dist + hyp;
+                                dat.X = -spriteAdj;
+                                dat.Z = -1100 + dist + spriteHyp;
                                 dat.D = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
                                 dat.W = halfCW;
                                 dat.bgImage = CMCCell.bgImage;
-                                dat.typ = CMCCell.type;
+                                dat.type = CMCCell.type;
                                 dat.top = CMCCell.top;
                                 if (spriteRot) {
                                     dat.CN = "rot" + spriteRot;
@@ -1177,7 +1365,7 @@ function rayCast() {
             for (type in CMC) {
                 CMCCell = cells[CMC[type]];
                 if (CMC[type]) {
-                    if (CMCCell.type < 3) { //wall or door
+                    if ((CMCCell && CMCCell.type < 3) || CMC[type].type < 3) { //wall or door
                         cornerRayX = rayCellPosX * cellSize + cornerDX - player.X;
                         cornerRayY = rayCellPosY * cellSize + cornerDY - player.Y;
                         cornerRayAngle = InvTan(cornerRayX, cornerRayY);
@@ -1217,7 +1405,7 @@ function rayCast() {
                                 dat.D = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
                                 dat.W = halfCW;
                                 dat.bgImage = CMCCell.bgImage;
-                                dat.typ = CMCCell.type;
+                                dat.type = CMCCell.type;
                                 if (CMCCell.rot) {
                                     dat.CN = "rot" + CMCCell.rot;
                                 }
@@ -1240,7 +1428,7 @@ function rayCast() {
                                 dat.D = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
                                 dat.W = halfCW;
                                 dat.bgImage = CMCCell.bgImage;
-                                dat.typ = CMCCell.type;
+                                dat.type = CMCCell.type;
                                 if (CMCCell.rot) {
                                     dat.CN = "rot" + CMCCell.rot;
                                 }
@@ -1291,5 +1479,4 @@ function rayCast() {
 function sortRay(a, b) {
     return b.D - a.D
 }
-
 window.onload = setup;

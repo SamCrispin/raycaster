@@ -40,7 +40,7 @@ BODY {
 	width: 1400px;
 	height: 650px;
 	overflow: hidden;
-	border:2px inset;
+	border: 2px inset;
 	perspective: 768px;
 	transform: translate3d(0, 0, 0);
 	backface-visibility: hidden;
