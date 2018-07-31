@@ -25,7 +25,7 @@ var fps, background, floor, wallDiv, viewPort, map,
         startEnemyId = 100, startPickupId = 50,
         enemyList = [], spriteList = [], respawnList = [],
         fpsCount = 0, gameLoopTs = 0,
-        oldFireTs = 0, bulletVelocity = 10, bulletCount = 0;
+        oldFireTs = 0, bulletVelocity = 20, bulletCount = 0;
 
 var bulletLocationList = [];
 
@@ -718,10 +718,11 @@ function updateBullets() {
                     if (map.mapData[i + xChanged][j + yChanged].cellType) {
                         if (!cells[map.mapData[i + xChanged][j + yChanged].cellType].tp) {
                             bulletArray.splice(k - bulletsRemoved, 1);
-                            bulletLocationList[i][j] = null;
+                            if (bulletArray.length == 0) bulletLocationList[i][j] = null;
                             checkBulletListEmpty(i, j);
                             checkIfCellEmpty(i, j);
                             bulletsRemoved++;
+                            bulletCount--;
                             continue;
                         }
                     }
@@ -730,10 +731,11 @@ function updateBullets() {
                     map.mapData[i + xChanged][j + yChanged].bullet.push(bulletArray[k]);
                     bulletArray.splice(k - bulletsRemoved, 1);
                     if (!bulletLocationList[i + xChanged]) bulletLocationList[i + xChanged] = [];
-                    bulletLocationList[i + xChanged][j + yChanged] = bulletLocationList[i][j];
-                    bulletLocationList[i + xChanged][j + yChanged].x += xChanged;
-                    bulletLocationList[i + xChanged][j + yChanged].y += yChanged;
-                    bulletLocationList[i][j] = null;
+                    //bulletLocationList[i + xChanged][j + yChanged] = bulletLocationList[i][j];
+                    bulletLocationList[i + xChanged][j + yChanged] = {};
+                    bulletLocationList[i + xChanged][j + yChanged].x = bulletLocationList[i][j].x + xChanged;
+                    bulletLocationList[i + xChanged][j + yChanged].y = bulletLocationList[i][j].y + yChanged;
+                    if (bulletArray.length == 0) bulletLocationList[i][j] = null;
                     checkBulletListEmpty(i, j);
                     checkIfCellEmpty(i, j);
                     bulletsRemoved++;
