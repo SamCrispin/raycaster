@@ -23,7 +23,7 @@ var fps, background, floor, wallDiv, viewPort, map,
         miniMapCellSize,
         oldPxForMiniMap, oldPyForMiniMap,
         startEnemyId = 100, startPickupId = 50,
-        enemyList = [], spriteList = [], respawnList = [],
+        enemyList = [], spriteList = [], respawnList = [], spriteLocationList = [],
         fpsCount = 0, gameLoopTs = 0,
         oldFireTs = 0, bulletVelocity = 20, bulletCount = 0;
 
@@ -78,14 +78,13 @@ var maps = [
         startX: 1920,
         startY: 1920,
         initialEnemies: [
-            //{cx: 7, mx: 64, cy: 10, my: 192, type: 0, id: 0, rot: 9, trkPos: 0, trkDat:[ 2, 64, -1, 8]}
+            {cx: 7, mx: 64, cy: 10, my: 192, type: 0, id: 0, rot: 9, trkPos: 0, trkDat:[ 2, 64, -1, 8]}
             //{cx: 8, mx: 128, cy: 2, my: 128, type: 0, id: 0, rot: 1, trkPos: 0, trkDat:[/* 2, 64, -1, 8*/]}
         ],
         initialPickups: [
-            {cx: 5, mx: 128, cy: 5, my: 128, pickupID: 1}
-            /*{cx: 2, mx: 128, cy: 6, my: 128, pickupID: 0},
-            {cx: 4, mx: 128, cy: 6, my: 128, pickupID: 2},
-            {cx: 6, mx: 128, cy: 6, my: 128, pickupID: 3}*/
+            {cx: 5, mx: 128, cy: 5, my: 128, pickupID: 1},
+            {cx: 5, mx: 128, cy: 6, my: 128, pickupID: 2}
+            //{cx: 6, mx: 128, cy: 6, my: 128, pickupID: 3}
         ]
     }
 ];
@@ -152,6 +151,7 @@ var enemies = [
         spd: 10,
         atkDist: 512,
         rndDist: 756,
+        enemyWidth: 80,
         movTyp: 0 //0 is route, 1 is random, 2 is attack
     }
 
@@ -247,6 +247,10 @@ function setup() {
         cells[startEnemyId].rot = thisEnemy.rot;
         cells[startEnemyId].trkPos = thisEnemy.trkPos;
         cells[startEnemyId].trkDat = thisEnemy.trkDat;
+        spriteLocationList[startEnemyId] = {};
+        spriteLocationList[startEnemyId].px = (cells[startEnemyId].cx * cellSize) + cells[startEnemyId].mx;
+        spriteLocationList[startEnemyId].py = (cells[startEnemyId].cy * cellSize) + cells[startEnemyId].my;
+        spriteLocationList[startEnemyId].variance = cells[startEnemyId].enemyWidth;
         unravelEnemyPath(cells[startEnemyId]);
         map.mapData[thisEnemy.cx][thisEnemy.cy] = startEnemyId;
         startEnemyId++;
@@ -432,7 +436,8 @@ function respawnTimer() {
         item.respawn--;
         if (item.respawn === 0) {
             if (map.mapData[item.cx][item.cy] === 0) createEmptyCellObject(item.cx, item.cy);
-            map.mapData[item.cx][item.cy].pickup = item.mapId;
+            if (map.mapData[item.cx][item.cy].pickup < 100) map.mapData[item.cx][item.cy].pickup = item.mapId;
+            else map.mapData[item.cx][item.cy].enemy = item.mapId;
             respawnList.splice(i, 1);
         }
     }
@@ -596,7 +601,9 @@ function gameLoop() {
     }
     gameLoopTs = tNow;
     doMove();
-    updateBullets();
+    if (bulletCount > 0) {
+        updateBullets();
+    }
     //check for enemy death
     if (spriteLoopCount == spriteLoop) {
         moveEnemies();
@@ -661,9 +668,8 @@ function fireBullet() {
     bullet.dy = Math.cos(playerFacingAngle * pi180) * bulletVelocity;
     bullet.dx = Math.sin(playerFacingAngle * pi180) * bulletVelocity;
     bullet.type = 5;
-    bullet.dmg = player.weapon.damage;
+    bullet.damage = player.weapon.damage;
     bullet.bgImage = player.weapon.bulletBgImage;
-
     if (map.mapData[player.cellX][player.cellY] === 0) {
         createEmptyCellObject(player.cellX, player.cellY);
         map.mapData[player.cellX][player.cellY].bullet = []
@@ -681,7 +687,7 @@ function fireBullet() {
 }
 
 function updateBullets() {
-    var bulletArray, bulletArrayLength, xChanged = 0, yChanged = 0, bulletsRemoved = 0;
+    var bulletArray, bulletArrayLength, xChanged = 0, yChanged = 0, bulletsRemoved = 0, bulletHit, damage;
     for (var i = 0; i < bulletLocationList.length; i++) {
         if (!bulletLocationList[i]) continue;
         for (var j = 0; j < bulletLocationList[i].length; j++) {
@@ -690,6 +696,7 @@ function updateBullets() {
             bulletArrayLength = bulletArray.length;
             bulletsRemoved = 0;
             for (var k = 0; k < bulletArrayLength; k++) {
+                bulletHit = false;
                 xChanged = 0;
                 yChanged = 0;
                 bulletArray[k - bulletsRemoved].mx += bulletArray[k - bulletsRemoved].dx;
@@ -714,6 +721,17 @@ function updateBullets() {
                     bulletArray[k - bulletsRemoved].my += cellSize;
                     yChanged = -1;
                 }
+                if (bulletHit = checkIfBulletHit(bulletArray[k - bulletsRemoved])) {
+                    damage = bulletArray[k - bulletsRemoved].damage;
+                    bulletArray.splice(k - bulletsRemoved, 1);
+                    if (bulletArray.length == 0) bulletLocationList[i][j] = null;
+                    checkBulletListEmpty(i, j);
+                    checkIfCellEmpty(i, j);
+                    bulletsRemoved++;
+                    bulletCount--;
+                    enemyHit(bulletHit, damage);
+                    continue;
+                }
                 if (xChanged || yChanged) {
                     if (map.mapData[i + xChanged][j + yChanged].cellType) {
                         if (!cells[map.mapData[i + xChanged][j + yChanged].cellType].tp) {
@@ -731,7 +749,6 @@ function updateBullets() {
                     map.mapData[i + xChanged][j + yChanged].bullet.push(bulletArray[k]);
                     bulletArray.splice(k - bulletsRemoved, 1);
                     if (!bulletLocationList[i + xChanged]) bulletLocationList[i + xChanged] = [];
-                    //bulletLocationList[i + xChanged][j + yChanged] = bulletLocationList[i][j];
                     bulletLocationList[i + xChanged][j + yChanged] = {};
                     bulletLocationList[i + xChanged][j + yChanged].x = bulletLocationList[i][j].x + xChanged;
                     bulletLocationList[i + xChanged][j + yChanged].y = bulletLocationList[i][j].y + yChanged;
@@ -751,6 +768,30 @@ function checkBulletListEmpty(i, j) {
     if (bulletArray.length === 0) map.mapData[i][j].bullet = 0;
 }
 
+function checkIfBulletHit(bullet) {
+    var bulletPx, bulletPy;
+    for (var i = 100; i < spriteLocationList.length; i++) {
+        if (spriteLocationList[i] === null) continue;
+        bulletPx = (bullet.cx * cellSize) + bullet.mx;
+        bulletPy = (bullet.cy * cellSize) + bullet.my;
+        if ((bulletPx > (spriteLocationList[i].px - spriteLocationList[i].variance)) && (bulletPx < (spriteLocationList[i].px + spriteLocationList[i].variance)) &&
+                (bulletPy > (spriteLocationList[i].py - spriteLocationList[i].variance)) && (bulletPy < (spriteLocationList[i].py + spriteLocationList[i].variance))) {
+            return i;
+        }
+    }
+    return false;
+}
+
+function enemyHit(enemyId, damage) {
+    cells[enemyId].hp -= damage;
+    if (cells[enemyId].hp <= 0) {
+        map.mapData[cells[enemyId].cx][cells[enemyId].cy].enemy = 0;
+        checkIfCellEmpty(cells[enemyId].cx, cells[enemyId].cy);
+        cells[enemyId] = null;
+        spriteLocationList[enemyId] = null;
+    }
+}
+
 function unravelEnemyPath(e) {
     var path = [], pathPos, newPathPos = 0, moveType;
     for (pathPos = 0; pathPos < e.trkDat.length; pathPos += 2) {
@@ -768,6 +809,7 @@ function moveEnemies() {
             ex, ey, ed,
             spriteAng, mov;
     for (i = 100; i < cells.length; i++) {
+        if (cells[i] === null) continue;
         e = cells[i];
         mov = e.trkDat[e.trkPos];
         ex = e.cx * cellSize + e.mx;
@@ -904,6 +946,8 @@ function eForwards(e, id) {
     if (map.mapData[e.cx][e.cy] === 0) {
         createEmptyCellObject(e.cx, e.cy);
     }
+    spriteLocationList[id].px += dx;
+    spriteLocationList[id].py += dy;
     map.mapData[e.cx][e.cy].enemy = id;
 }
 
@@ -1175,7 +1219,7 @@ function rayCast() {
                             }
                         }
                     }
-                    else { //sprite or bullet
+                    else { //sprite
                         //compute actual dx, dy
                         deltaX = (rayCellPosX * cellSize + CMCCell.mx) - player.X;
                         deltaY = (rayCellPosY * cellSize + CMCCell.my) - player.Y;

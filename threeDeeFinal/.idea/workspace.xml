@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8928a909-8435-4a6b-b6b7-aae6f624e3f3" name="Default" comment="Finished refactoring of map object&#10;Can fire (bullet has temporary image for now)&#10;Added a few more clarity comments">
+    <list default="true" id="8928a909-8435-4a6b-b6b7-aae6f624e3f3" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/bulletTest.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/bulletTest.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/script/threeDee.js" beforeDir="false" afterPath="$PROJECT_DIR$/script/threeDee.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -29,8 +30,8 @@
       <file leaf-file-name="threeDee.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/css/threeDee.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1377">
-              <caret line="81" selection-start-line="81" selection-end-line="81" />
+            <state relative-caret-position="-8">
+              <caret line="132" column="17" lean-forward="true" selection-start-line="132" selection-start-column="17" selection-end-line="132" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -38,21 +39,34 @@
       <file leaf-file-name="threeDee.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/script/threeDee.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="27" column="42" selection-start-line="27" selection-start-column="42" selection-end-line="27" selection-end-column="42" />
+            <state relative-caret-position="-3476">
+              <caret line="154" column="17" lean-forward="true" selection-start-line="154" selection-start-column="17" selection-end-line="154" selection-end-column="17" />
               <folding>
+                <element signature="n#!!block;n#refactorMapArray#0" />
+                <element signature="n#!!block;n#checkIfCellEmpty#0" />
+                <element signature="n#!!block;n#createEmptyCellObject#0" />
                 <element signature="n#!!block;n#setUpKeys#0" />
                 <element signature="n#!!block;n#keyClear#0" />
+                <element signature="n#!!block;n#keyDownHandler#0" />
                 <element signature="n#!!block;n#keyUpHandler#0" />
+                <element signature="n#!!block;n#openDoor#0" />
                 <element signature="n#!!block;n#updateView#0" />
-                <element signature="n#!!block;n#respawnTimer#0" />
+                <element signature="n#!!block;n#equip#0" />
+                <element signature="n#!!block;n#doMove#0" />
+                <element signature="n#!!block;n#genMap#0" />
                 <element signature="n#!!block;n#updateMap#0" />
+                <element signature="n#!!block;n#updateBullets#0" />
+                <element signature="n#!!block;n#checkBulletListEmpty#0" />
+                <element signature="n#!!block;n#f#0" />
+                <element signature="n#!!block;n#enemyHit#0" />
                 <element signature="n#!!block;n#unravelEnemyPath#0" />
                 <element signature="n#!!block;n#moveEnemies#0" />
                 <element signature="n#!!block;n#eRotate#0" />
                 <element signature="n#!!block;n#eForwards#0" />
                 <element signature="n#!!block;n#render#0" />
                 <element signature="n#!!block;n#InvTan#0" />
+                <element signature="n#!!block;n#rayCast#0" />
+                <element signature="n#!!block;n#sortRay#0" />
               </folding>
             </state>
           </provider>
@@ -62,9 +76,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>!</find>
-      <find>SLX</find>
-      <find>mapId</find>
       <find>eFor</find>
       <find>splice</find>
       <find>eFore</find>
@@ -88,10 +99,13 @@
       <find>fire</find>
       <find>1035</find>
       <find>spriteHyp</find>
-      <find>gameLoop</find>
       <find>bulletsRemoved</find>
-      <find>bulletCount</find>
       <find>bullet</find>
+      <find>move</find>
+      <find>bulletCount</find>
+      <find>gameLoop</find>
+      <find>respawnList</find>
+      <find>enemyList</find>
     </findStrings>
     <replaceStrings>
       <replace>Math.floor</replace>
@@ -124,17 +138,20 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1832" />
-    <option name="y" value="-15" />
-    <option name="width" value="1104" />
-    <option name="height" value="1007" />
+    <option name="x" value="1912" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane" />
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="dw256&#9;FILE&#9;file://C:/Users/crispis.IGI/Documents/raycastProjs/threeDeeFinal/img/dw256.png" />
@@ -184,7 +201,8 @@
       <workItem from="1529680782198" duration="30000" />
       <workItem from="1529681133190" duration="1838000" />
       <workItem from="1532593514458" duration="31526000" />
-      <workItem from="1533025929218" duration="4525000" />
+      <workItem from="1533025929218" duration="6518000" />
+      <workItem from="1533048169251" duration="16165000" />
     </task>
     <task id="LOCAL-00001" summary="Finished refactoring of map object&#10;Can fire (bullet has temporary image for now)&#10;Added a few more clarity comments">
       <created>1532699243912</created>
@@ -193,24 +211,31 @@
       <option name="project" value="LOCAL" />
       <updated>1532699243912</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="SHOOTING FUCKING WORKS">
+      <created>1533038710100</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1533038710100</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="193093000" />
+    <option name="totallyTimeSpent" value="211251000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.22222222" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.221875" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.32943678" />
-      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32943678" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.32943678" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.32943678" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -225,19 +250,19 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22222222" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.221875" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32943678" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" weight="0.32943678" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32943678" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.32943678" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.32943678" />
+      <window_info anchor="bottom" id="Message" order="0" />
       <window_info id="Favorites" order="2" side_tool="true" />
     </layout-to-restore>
   </component>
@@ -259,11 +284,12 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Finished refactoring of map object&#10;Can fire (bullet has temporary image for now)&#10;Added a few more clarity comments" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finished refactoring of map object&#10;Can fire (bullet has temporary image for now)&#10;Added a few more clarity comments" />
+    <MESSAGE value="SHOOTING FUCKING WORKS" />
+    <option name="LAST_COMMIT_MESSAGE" value="SHOOTING FUCKING WORKS" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="15" />
+      <option name="time" value="18" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -279,18 +305,31 @@
         <state relative-caret-position="7837">
           <caret line="815" selection-start-line="815" selection-end-line="815" />
           <folding>
+            <element signature="n#!!block;n#refactorMapArray#0" />
+            <element signature="n#!!block;n#checkIfCellEmpty#0" />
+            <element signature="n#!!block;n#createEmptyCellObject#0" />
             <element signature="n#!!block;n#setUpKeys#0" />
             <element signature="n#!!block;n#keyClear#0" />
+            <element signature="n#!!block;n#keyDownHandler#0" />
             <element signature="n#!!block;n#keyUpHandler#0" />
+            <element signature="n#!!block;n#openDoor#0" />
             <element signature="n#!!block;n#updateView#0" />
-            <element signature="n#!!block;n#respawnTimer#0" />
+            <element signature="n#!!block;n#equip#0" />
+            <element signature="n#!!block;n#doMove#0" />
+            <element signature="n#!!block;n#genMap#0" />
             <element signature="n#!!block;n#updateMap#0" />
+            <element signature="n#!!block;n#updateBullets#0" />
+            <element signature="n#!!block;n#checkBulletListEmpty#0" />
+            <element signature="n#!!block;n#f#0" />
+            <element signature="n#!!block;n#enemyHit#0" />
             <element signature="n#!!block;n#unravelEnemyPath#0" />
             <element signature="n#!!block;n#moveEnemies#0" />
             <element signature="n#!!block;n#eRotate#0" />
             <element signature="n#!!block;n#eForwards#0" />
             <element signature="n#!!block;n#render#0" />
             <element signature="n#!!block;n#InvTan#0" />
+            <element signature="n#!!block;n#rayCast#0" />
+            <element signature="n#!!block;n#sortRay#0" />
           </folding>
         </state>
       </provider>
@@ -314,18 +353,31 @@
         <state relative-caret-position="7837">
           <caret line="815" lean-forward="true" selection-start-line="815" selection-end-line="815" />
           <folding>
+            <element signature="n#!!block;n#refactorMapArray#0" />
+            <element signature="n#!!block;n#checkIfCellEmpty#0" />
+            <element signature="n#!!block;n#createEmptyCellObject#0" />
             <element signature="n#!!block;n#setUpKeys#0" />
             <element signature="n#!!block;n#keyClear#0" />
+            <element signature="n#!!block;n#keyDownHandler#0" />
             <element signature="n#!!block;n#keyUpHandler#0" />
+            <element signature="n#!!block;n#openDoor#0" />
             <element signature="n#!!block;n#updateView#0" />
-            <element signature="n#!!block;n#respawnTimer#0" />
+            <element signature="n#!!block;n#equip#0" />
+            <element signature="n#!!block;n#doMove#0" />
+            <element signature="n#!!block;n#genMap#0" />
             <element signature="n#!!block;n#updateMap#0" />
+            <element signature="n#!!block;n#updateBullets#0" />
+            <element signature="n#!!block;n#checkBulletListEmpty#0" />
+            <element signature="n#!!block;n#f#0" />
+            <element signature="n#!!block;n#enemyHit#0" />
             <element signature="n#!!block;n#unravelEnemyPath#0" />
             <element signature="n#!!block;n#moveEnemies#0" />
             <element signature="n#!!block;n#eRotate#0" />
             <element signature="n#!!block;n#eForwards#0" />
             <element signature="n#!!block;n#render#0" />
             <element signature="n#!!block;n#InvTan#0" />
+            <element signature="n#!!block;n#rayCast#0" />
+            <element signature="n#!!block;n#sortRay#0" />
           </folding>
         </state>
       </provider>
@@ -349,18 +401,31 @@
         <state relative-caret-position="4590">
           <caret line="356" column="15" selection-start-line="356" selection-start-column="9" selection-end-line="356" selection-end-column="15" />
           <folding>
+            <element signature="n#!!block;n#refactorMapArray#0" />
+            <element signature="n#!!block;n#checkIfCellEmpty#0" />
+            <element signature="n#!!block;n#createEmptyCellObject#0" />
             <element signature="n#!!block;n#setUpKeys#0" />
             <element signature="n#!!block;n#keyClear#0" />
+            <element signature="n#!!block;n#keyDownHandler#0" />
             <element signature="n#!!block;n#keyUpHandler#0" />
+            <element signature="n#!!block;n#openDoor#0" />
             <element signature="n#!!block;n#updateView#0" />
-            <element signature="n#!!block;n#respawnTimer#0" />
+            <element signature="n#!!block;n#equip#0" />
+            <element signature="n#!!block;n#doMove#0" />
+            <element signature="n#!!block;n#genMap#0" />
             <element signature="n#!!block;n#updateMap#0" />
+            <element signature="n#!!block;n#updateBullets#0" />
+            <element signature="n#!!block;n#checkBulletListEmpty#0" />
+            <element signature="n#!!block;n#f#0" />
+            <element signature="n#!!block;n#enemyHit#0" />
             <element signature="n#!!block;n#unravelEnemyPath#0" />
             <element signature="n#!!block;n#moveEnemies#0" />
             <element signature="n#!!block;n#eRotate#0" />
             <element signature="n#!!block;n#eForwards#0" />
             <element signature="n#!!block;n#render#0" />
             <element signature="n#!!block;n#InvTan#0" />
+            <element signature="n#!!block;n#rayCast#0" />
+            <element signature="n#!!block;n#sortRay#0" />
           </folding>
         </state>
       </provider>
@@ -384,18 +449,31 @@
         <state relative-caret-position="646">
           <caret line="38" column="16" selection-start-line="38" selection-start-column="16" selection-end-line="38" selection-end-column="16" />
           <folding>
+            <element signature="n#!!block;n#refactorMapArray#0" />
+            <element signature="n#!!block;n#checkIfCellEmpty#0" />
+            <element signature="n#!!block;n#createEmptyCellObject#0" />
             <element signature="n#!!block;n#setUpKeys#0" />
             <element signature="n#!!block;n#keyClear#0" />
+            <element signature="n#!!block;n#keyDownHandler#0" />
             <element signature="n#!!block;n#keyUpHandler#0" />
+            <element signature="n#!!block;n#openDoor#0" />
             <element signature="n#!!block;n#updateView#0" />
-            <element signature="n#!!block;n#respawnTimer#0" />
+            <element signature="n#!!block;n#equip#0" />
+            <element signature="n#!!block;n#doMove#0" />
+            <element signature="n#!!block;n#genMap#0" />
             <element signature="n#!!block;n#updateMap#0" />
+            <element signature="n#!!block;n#updateBullets#0" />
+            <element signature="n#!!block;n#checkBulletListEmpty#0" />
+            <element signature="n#!!block;n#f#0" />
+            <element signature="n#!!block;n#enemyHit#0" />
             <element signature="n#!!block;n#unravelEnemyPath#0" />
             <element signature="n#!!block;n#moveEnemies#0" />
             <element signature="n#!!block;n#eRotate#0" />
             <element signature="n#!!block;n#eForwards#0" />
             <element signature="n#!!block;n#render#0" />
             <element signature="n#!!block;n#InvTan#0" />
+            <element signature="n#!!block;n#rayCast#0" />
+            <element signature="n#!!block;n#sortRay#0" />
           </folding>
         </state>
       </provider>
@@ -419,18 +497,31 @@
         <state relative-caret-position="4879">
           <caret line="724" column="1" lean-forward="true" selection-start-line="724" selection-start-column="1" selection-end-line="724" selection-end-column="1" />
           <folding>
+            <element signature="n#!!block;n#refactorMapArray#0" />
+            <element signature="n#!!block;n#checkIfCellEmpty#0" />
+            <element signature="n#!!block;n#createEmptyCellObject#0" />
             <element signature="n#!!block;n#setUpKeys#0" />
             <element signature="n#!!block;n#keyClear#0" />
+            <element signature="n#!!block;n#keyDownHandler#0" />
             <element signature="n#!!block;n#keyUpHandler#0" />
+            <element signature="n#!!block;n#openDoor#0" />
             <element signature="n#!!block;n#updateView#0" />
-            <element signature="n#!!block;n#respawnTimer#0" />
+            <element signature="n#!!block;n#equip#0" />
+            <element signature="n#!!block;n#doMove#0" />
+            <element signature="n#!!block;n#genMap#0" />
             <element signature="n#!!block;n#updateMap#0" />
+            <element signature="n#!!block;n#updateBullets#0" />
+            <element signature="n#!!block;n#checkBulletListEmpty#0" />
+            <element signature="n#!!block;n#f#0" />
+            <element signature="n#!!block;n#enemyHit#0" />
             <element signature="n#!!block;n#unravelEnemyPath#0" />
             <element signature="n#!!block;n#moveEnemies#0" />
             <element signature="n#!!block;n#eRotate#0" />
             <element signature="n#!!block;n#eForwards#0" />
             <element signature="n#!!block;n#render#0" />
             <element signature="n#!!block;n#InvTan#0" />
+            <element signature="n#!!block;n#rayCast#0" />
+            <element signature="n#!!block;n#sortRay#0" />
           </folding>
         </state>
       </provider>
@@ -454,18 +545,31 @@
         <state relative-caret-position="2057">
           <caret line="121" column="9" selection-start-line="121" selection-start-column="9" selection-end-line="121" selection-end-column="9" />
           <folding>
+            <element signature="n#!!block;n#refactorMapArray#0" />
+            <element signature="n#!!block;n#checkIfCellEmpty#0" />
+            <element signature="n#!!block;n#createEmptyCellObject#0" />
             <element signature="n#!!block;n#setUpKeys#0" />
             <element signature="n#!!block;n#keyClear#0" />
+            <element signature="n#!!block;n#keyDownHandler#0" />
             <element signature="n#!!block;n#keyUpHandler#0" />
+            <element signature="n#!!block;n#openDoor#0" />
             <element signature="n#!!block;n#updateView#0" />
-            <element signature="n#!!block;n#respawnTimer#0" />
+            <element signature="n#!!block;n#equip#0" />
+            <element signature="n#!!block;n#doMove#0" />
+            <element signature="n#!!block;n#genMap#0" />
             <element signature="n#!!block;n#updateMap#0" />
+            <element signature="n#!!block;n#updateBullets#0" />
+            <element signature="n#!!block;n#checkBulletListEmpty#0" />
+            <element signature="n#!!block;n#f#0" />
+            <element signature="n#!!block;n#enemyHit#0" />
             <element signature="n#!!block;n#unravelEnemyPath#0" />
             <element signature="n#!!block;n#moveEnemies#0" />
             <element signature="n#!!block;n#eRotate#0" />
             <element signature="n#!!block;n#eForwards#0" />
             <element signature="n#!!block;n#render#0" />
             <element signature="n#!!block;n#InvTan#0" />
+            <element signature="n#!!block;n#rayCast#0" />
+            <element signature="n#!!block;n#sortRay#0" />
           </folding>
         </state>
       </provider>
@@ -489,18 +593,31 @@
         <state relative-caret-position="799">
           <caret line="47" column="9" lean-forward="true" selection-start-line="47" selection-start-column="9" selection-end-line="47" selection-end-column="9" />
           <folding>
+            <element signature="n#!!block;n#refactorMapArray#0" />
+            <element signature="n#!!block;n#checkIfCellEmpty#0" />
+            <element signature="n#!!block;n#createEmptyCellObject#0" />
             <element signature="n#!!block;n#setUpKeys#0" />
             <element signature="n#!!block;n#keyClear#0" />
+            <element signature="n#!!block;n#keyDownHandler#0" />
             <element signature="n#!!block;n#keyUpHandler#0" />
+            <element signature="n#!!block;n#openDoor#0" />
             <element signature="n#!!block;n#updateView#0" />
-            <element signature="n#!!block;n#respawnTimer#0" />
+            <element signature="n#!!block;n#equip#0" />
+            <element signature="n#!!block;n#doMove#0" />
+            <element signature="n#!!block;n#genMap#0" />
             <element signature="n#!!block;n#updateMap#0" />
+            <element signature="n#!!block;n#updateBullets#0" />
+            <element signature="n#!!block;n#checkBulletListEmpty#0" />
+            <element signature="n#!!block;n#f#0" />
+            <element signature="n#!!block;n#enemyHit#0" />
             <element signature="n#!!block;n#unravelEnemyPath#0" />
             <element signature="n#!!block;n#moveEnemies#0" />
             <element signature="n#!!block;n#eRotate#0" />
             <element signature="n#!!block;n#eForwards#0" />
             <element signature="n#!!block;n#render#0" />
             <element signature="n#!!block;n#InvTan#0" />
+            <element signature="n#!!block;n#rayCast#0" />
+            <element signature="n#!!block;n#sortRay#0" />
           </folding>
         </state>
       </provider>
@@ -683,13 +800,6 @@
     <entry file="file://$PROJECT_DIR$/../picoAsm/picoAsm.js" />
     <entry file="file://$PROJECT_DIR$/../threeDeeHou/threeDee/script/threeDee.js" />
     <entry file="file://$PROJECT_DIR$/img/dw256.png" />
-    <entry file="file://$PROJECT_DIR$/css/threeDee.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1377">
-          <caret line="81" selection-start-line="81" selection-end-line="81" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/threeDee.htm">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -697,23 +807,43 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/css/threeDee.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-8">
+          <caret line="132" column="17" lean-forward="true" selection-start-line="132" selection-start-column="17" selection-end-line="132" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/script/threeDee.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="27" column="42" selection-start-line="27" selection-start-column="42" selection-end-line="27" selection-end-column="42" />
+        <state relative-caret-position="-3476">
+          <caret line="154" column="17" lean-forward="true" selection-start-line="154" selection-start-column="17" selection-end-line="154" selection-end-column="17" />
           <folding>
+            <element signature="n#!!block;n#refactorMapArray#0" />
+            <element signature="n#!!block;n#checkIfCellEmpty#0" />
+            <element signature="n#!!block;n#createEmptyCellObject#0" />
             <element signature="n#!!block;n#setUpKeys#0" />
             <element signature="n#!!block;n#keyClear#0" />
+            <element signature="n#!!block;n#keyDownHandler#0" />
             <element signature="n#!!block;n#keyUpHandler#0" />
+            <element signature="n#!!block;n#openDoor#0" />
             <element signature="n#!!block;n#updateView#0" />
-            <element signature="n#!!block;n#respawnTimer#0" />
+            <element signature="n#!!block;n#equip#0" />
+            <element signature="n#!!block;n#doMove#0" />
+            <element signature="n#!!block;n#genMap#0" />
             <element signature="n#!!block;n#updateMap#0" />
+            <element signature="n#!!block;n#updateBullets#0" />
+            <element signature="n#!!block;n#checkBulletListEmpty#0" />
+            <element signature="n#!!block;n#f#0" />
+            <element signature="n#!!block;n#enemyHit#0" />
             <element signature="n#!!block;n#unravelEnemyPath#0" />
             <element signature="n#!!block;n#moveEnemies#0" />
             <element signature="n#!!block;n#eRotate#0" />
             <element signature="n#!!block;n#eForwards#0" />
             <element signature="n#!!block;n#render#0" />
             <element signature="n#!!block;n#InvTan#0" />
+            <element signature="n#!!block;n#rayCast#0" />
+            <element signature="n#!!block;n#sortRay#0" />
           </folding>
         </state>
       </provider>
